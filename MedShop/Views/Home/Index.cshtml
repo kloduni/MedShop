@@ -1,8 +1,26 @@
-﻿@{
+﻿@model IEnumerable<MedShop.Core.Models.ProductViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center row">
+    @foreach (var product in Model)
+    {
+        <div class="card col-4" style="width: 20rem;">
+            <img class="card-img-top" style="width: 18rem;"
+                 src="@product.ImageUrl" alt="Product Image">
+            <div class="card-body">
+
+                <h5 class="card-title mt-1">@product.ProductName</h5>
+                <p class="mb-0">Description: @product.Description</p>
+                <p class="mb-0">Price: @product.Price</p>
+                <p class="mb-0">User: @product.Trader</p>
+            </div>
+
+            <form class="input-group-sm" asp-route-productId ="@product.Id" asp-controller="Home" asp-action="Index" method="post">
+                <input type="submit" value="Order" class="fs-6 btn btn-success mb-3 p-2" />
+            </form>
+        </div>
+    }
 </div>

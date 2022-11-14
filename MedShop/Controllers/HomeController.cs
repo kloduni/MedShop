@@ -1,26 +1,26 @@
 ﻿using MedShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using MedShop.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MedShop.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductService productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductService _productService)
         {
-            _logger = logger;
+            productService = _productService;
         }
 
-        public IActionResult Index()
+        [AllowAnonymous]
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var model = await productService.GetAllProductsAsync();
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

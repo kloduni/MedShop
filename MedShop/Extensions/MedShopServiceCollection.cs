@@ -10,6 +10,7 @@ namespace MedShop.Extensions.DependencyInjection
         {
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ITraderService, TraderService>();
 
             return services;
         }

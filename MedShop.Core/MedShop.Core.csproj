@@ -10,8 +10,4 @@
     <ProjectReference Include="..\MedShop.Infrastructure\MedShop.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Trader\" />
-  </ItemGroup>
-
 </Project>

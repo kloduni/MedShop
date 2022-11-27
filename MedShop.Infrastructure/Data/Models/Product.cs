@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace MedShop.Infrastructure.Data.Models
 {
@@ -18,13 +19,21 @@ namespace MedShop.Infrastructure.Data.Models
         [Required]
         public decimal Price { get; set; }
 
-        [StringLength(200)]
-        public string? Description { get; set; }
+        [Required] 
+        [StringLength(200)] 
+        public string Description { get; set; } = null!;
+
+        [Required]
+        [ForeignKey(nameof(Category))]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; } = null!;
 
         [Required] 
-        [ForeignKey(nameof(User))] 
-        public string UserId { get; set; } = null!;
+        [ForeignKey(nameof(Trader))] 
+        public int TraderId { get; set; }
 
-        public User User { get; set; } = null!;
+        public Trader Trader { get; set; } = null!;
+
+        public bool IsActive { get; set; } = true;
     }
 }

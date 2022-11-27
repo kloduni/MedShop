@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace MedShop.Core.Models
+namespace MedShop.Core.Models.Product
 {
     public class AddProductViewModel
     {

@@ -1,4 +1,4 @@
-﻿using MedShop.Core.Models;
+﻿using MedShop.Core.Models.User;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -51,8 +51,6 @@ namespace MedShop.Controllers
 
             if (result.Succeeded)
             {
-                //await signInManager.SignInAsync(user, isPersistent: false);
-
                 return RedirectToAction("Login", "User");
             }
 
@@ -102,6 +100,13 @@ namespace MedShop.Controllers
             ModelState.AddModelError("", "Invalid Login!");
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

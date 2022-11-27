@@ -16,11 +16,9 @@ namespace MedShop.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var model = await productService.GetAllProductsAsync();
-
-            return View(model);
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

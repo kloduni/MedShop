@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedShop.Core.Models
+namespace MedShop.Core.Models.User
 {
     public class RegisterViewModel
     {

@@ -21,25 +21,35 @@ namespace MedShop.Infrastructure.Data.Configuration
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "admin",
-                NormalizedUserName = "admin@mail.com",
-                Email = "admin@mail.com",
-                NormalizedEmail = "admin@mail.com",
+                NormalizedUserName = "admin@medshop.com",
+                Email = "admin@medshop.com",
+                NormalizedEmail = "admin@medshop.com",
             };
             user.PasswordHash = hasher.HashPassword(user, "admin123");
-
             users.Add(user);
 
             user = new User()
             {
                 Id = "89159c08-2f95-456f-91ea-75136c030b7b",
                 UserName = "guest",
-                NormalizedUserName = "guest@mail.com",
-                Email = "guest@mail.com",
-                NormalizedEmail = "guest@mail.com"
+                NormalizedUserName = "guest@medshop.com",
+                Email = "guest@medshop.com",
+                NormalizedEmail = "guest@medshop.com"
             };
             user.PasswordHash = hasher.HashPassword(user, "guest123");
-
             users.Add(user);
+
+            user = new User()
+            {
+                Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
+                UserName = "guest1@medshop.com",
+                NormalizedUserName = "guest1@medshop.com",
+                Email = "guest1@medshop.com",
+                NormalizedEmail = "guest1@medshop.com"
+            };
+            user.PasswordHash = hasher.HashPassword(user, "guest123");
+            users.Add(user);
+
 
             return users;
         }

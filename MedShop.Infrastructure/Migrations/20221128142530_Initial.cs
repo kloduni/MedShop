@@ -230,9 +230,9 @@ namespace MedShop.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "9b4c19ea-8c3f-4055-9fbf-cc58242dbd35", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEPeO8gPsKBnmwo7kD/Ec6+9XssavgZ+7U4jPi3uzvoRugBmo9Yvbfngkp1RZGmPvMw==", null, false, "aba4057f-b367-44d1-b4eb-fea190c950f5", false, "guest1@medshop.com" },
-                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "a435c8e0-e16a-4015-bad7-422e46cfb60c", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEGeAJXL3dET6KpkMpZsSUQ5Ws5bkrQotrMqqAngSALAtEQK0fUzcvJnjfr9wztE+sA==", null, false, "8983fff7-7871-429b-87b5-290b1a0fb90b", false, "guest" },
-                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "823644d4-d7aa-4b36-882b-9e2d8b8350cf", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAEGmvBf8VMjStM1dNZsrboHTEe1GC3836/PdtAKjgIFp7T+8ZWq7aRixdk96WHN7ifA==", null, false, "302dcc89-6ae6-4758-ad41-85a0ba2d6100", false, "admin" }
+                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "5fa2c73c-30cf-4e60-917d-ee21882d7fae", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEHTo/wgCz4mCGGrRTkr5klwDTbCtTgRWArTLOj3tpVzetNJWSPDChg72Lht1qTvgrA==", null, false, "9ebafc40-f281-4088-ae0b-e9fc0cccf6e2", false, "guest1@medshop.com" },
+                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "9986c5d6-0bbe-4ff1-a59d-ade5ac93868c", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEBe18ToTY767wMN+NK5PQ12EcrnRI9Tn5YuzB2OMjhTUvbOO7rpPB1OvDTQYgRVP8w==", null, false, "e06f86b4-77ee-4fe8-9891-96577dc22b73", false, "guest" },
+                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "ea905f8d-fc21-4810-b1a0-97f8dca3f743", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAELQo94dHFAZ53DCaOCGaxil5mcyfgnmhQaJJWWsUIZTTPLdbz6L4BoBp+RA/gEk2lQ==", null, false, "0298b524-41d1-410f-8558-663e7a2dbb9f", false, "admin" }
                 });
 
             migrationBuilder.InsertData(

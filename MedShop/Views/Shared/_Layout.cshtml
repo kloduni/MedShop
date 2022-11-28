@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MedShop</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    @*<link rel="stylesheet" href="~/css/Superhero.css" />*@
+    <link rel="stylesheet" href="~/css/Lumen.css" />
     <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MedShop.styles.css" asp-append-version="true" />
@@ -37,14 +39,13 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="MyProducts">My Products</a>
+                                    <a class="nav-link text-bg-light" asp-area="" asp-controller="Product" asp-action="MyProducts">My Products</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Add">Add Product</a>
+                                        <a class="nav-link text-bg-light" asp-area="" asp-controller="Product" asp-action="Add">Add Product</a>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Trader" asp-action="Become">Become Trader</a>
+                                        <a class="nav-link text-bg-light" asp-area="" asp-controller="Trader" asp-action="Become">Become Trader</a>
                                 </li>
                             </ul>
                         </li>
@@ -61,7 +62,7 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer class="border-top footer text-dark">
     <div class="container">
         &copy; @DateTime.UtcNow - MedShop
     </div>

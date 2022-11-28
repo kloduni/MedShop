@@ -18,5 +18,10 @@ namespace MedShop.Core.Contracts
             int productsPerPage = 1);
 
         Task<IEnumerable<string>> AllCategoriesNamesAsync();
+        Task<IEnumerable<ProductCategoryModel>> AllCategoriesAsync();
+        Task<bool> CategoryExistsAsync(int categoryId);
+        Task<int> CreateAsync(ProductBaseModel model, int traderId);
+        Task<bool> ExistsAsync(int productId);
+        Task<ProductDetailsModel> ProductDetailsByIdAsync(int productId);
     }
 }

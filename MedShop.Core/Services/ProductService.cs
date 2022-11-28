@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MedShop.Core.Contracts;
 using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
+using MedShop.Core.Models.Trader;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +74,71 @@ namespace MedShop.Core.Services
             return await repo.AllReadonly<Category>()
                 .Select(c => c.Name)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProductCategoryModel>> AllCategoriesAsync()
+        {
+            return await repo.AllReadonly<Category>()
+                .OrderBy(c => c.Name)
+                .Select(c => new ProductCategoryModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> CategoryExistsAsync(int categoryId)
+        {
+            return await repo.AllReadonly<Category>()
+                .AnyAsync(c => c.Id == categoryId);
+
+        }
+
+        public async Task<int> CreateAsync(ProductBaseModel model, int traderId)
+        {
+            var product = new Product()
+            {
+                ProductName = model.ProductName,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                Price = model.Price,
+                CategoryId = model.CategoryId,
+                TraderId = traderId
+            };
+
+            await repo.AddAsync(product);
+            await repo.SaveChangesAsync();
+
+            return product.Id;
+        }
+
+        public async Task<bool> ExistsAsync(int productId)
+        {
+            return await repo.AllReadonly<Product>()
+                .AnyAsync(p => p.Id == productId);
+        }
+
+        public async Task<ProductDetailsModel> ProductDetailsByIdAsync(int productId)
+        {
+            return await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive && p.Id == productId)
+                .Select(p => new ProductDetailsModel()
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    Category = p.Category.Name,
+                    Trader = new TraderServiceModel()
+                    {
+                        TraderName = p.Trader.TraderName,
+                        PhoneNumber = p.Trader.PhoneNumber,
+                        Email = p.Trader.User.Email
+                    }
+                })
+                .FirstAsync();
         }
     }
 }

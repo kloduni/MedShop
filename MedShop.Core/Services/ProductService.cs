@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MedShop.Core.Contracts;
 using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
-using MedShop.Core.Models.Trader;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedShop.Core.Services
@@ -95,7 +91,7 @@ namespace MedShop.Core.Services
 
         }
 
-        public async Task<int> CreateAsync(ProductBaseModel model, int traderId)
+        public async Task<int> CreateAsync(ProductBaseModel model, string userId)
         {
             var product = new Product()
             {
@@ -104,10 +100,16 @@ namespace MedShop.Core.Services
                 ImageUrl = model.ImageUrl,
                 Price = model.Price,
                 CategoryId = model.CategoryId,
-                TraderId = traderId
+            };
+
+            var userProduct = new UserProduct()
+            {
+                UserId = userId,
+                Product = product
             };
 
             await repo.AddAsync(product);
+            await repo.AddAsync(userProduct);
             await repo.SaveChangesAsync();
 
             return product.Id;
@@ -119,11 +121,11 @@ namespace MedShop.Core.Services
                 .AnyAsync(p => p.Id == productId);
         }
 
-        public async Task<ProductDetailsModel> ProductDetailsByIdAsync(int productId)
+        public async Task<ProductServiceModel> ProductDetailsByIdAsync(int productId)
         {
             return await repo.AllReadonly<Product>()
                 .Where(p => p.IsActive && p.Id == productId)
-                .Select(p => new ProductDetailsModel()
+                .Select(p => new ProductServiceModel()
                 {
                     Id = p.Id,
                     ProductName = p.ProductName,
@@ -131,14 +133,69 @@ namespace MedShop.Core.Services
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     Category = p.Category.Name,
-                    Trader = new TraderServiceModel()
-                    {
-                        TraderName = p.Trader.TraderName,
-                        PhoneNumber = p.Trader.PhoneNumber,
-                        Email = p.Trader.User.Email
-                    }
+                    Seller = p.UsersProducts.Select(up => up.User.UserName).First()
                 })
                 .FirstAsync();
+        }
+
+        public async Task<IEnumerable<ProductServiceModel>> AllProductsByUserIdAsync(string userId)
+        {
+            return await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive && p.UsersProducts.Select(up => up.UserId).First() == userId)
+                .Select(p => new ProductServiceModel()
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    Category = p.Category.Name,
+                    Seller = p.UsersProducts.Select(up => up.User.UserName).First()
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> HasUserWithIdAsync(int productId, string currentUserId)
+        {
+            bool result = false;
+
+            var product = await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive && p.Id == productId)
+                .Include(p => p.UsersProducts)
+                .FirstOrDefaultAsync();
+
+            if (product != null && product.UsersProducts.Select(up => up.UserId).First() == currentUserId)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        public async Task<int> GetProductCategoryIdAsync(int productId)
+        {
+            return (await repo.GetByIdAsync<Product>(productId)).CategoryId;
+        }
+
+        public async Task EditAsync(int productId, ProductBaseModel model)
+        {
+            var product = await repo.GetByIdAsync<Product>(productId);
+
+            product.ProductName = model.ProductName;
+            product.Description = model.Description;
+            product.Price = model.Price;
+            product.ImageUrl = model.ImageUrl;
+            product.CategoryId = model.CategoryId;
+
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int productId)
+        {
+            var product = await repo.GetByIdAsync<Product>(productId);
+            product.IsActive = false;
+
+            await repo.SaveChangesAsync();
         }
     }
 }

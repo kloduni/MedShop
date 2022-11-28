@@ -28,12 +28,8 @@ namespace MedShop.Infrastructure.Data.Models
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
-        [Required] 
-        [ForeignKey(nameof(Trader))] 
-        public int TraderId { get; set; }
-
-        public Trader Trader { get; set; } = null!;
-
         public bool IsActive { get; set; } = true;
+
+        public ICollection<UserProduct> UsersProducts { get; set; } = new List<UserProduct>();
     }
 }

@@ -14,16 +14,18 @@ namespace MedShop.Infrastructure.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Trader> Traders { get; set; }
+        public DbSet<UserProduct> UsersProducts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<UserProduct>()
+                .HasKey(up => new {up.UserId, up.ProductId});
 
             builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new TraderConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new UserProductConfiguration());
 
             base.OnModelCreating(builder);
         }

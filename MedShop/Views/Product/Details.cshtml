@@ -1,4 +1,4 @@
-﻿@model MedShop.Core.Models.Product.ProductDetailsModel
+﻿@model MedShop.Core.Models.Product.ProductServiceModel
 
 @{
     ViewBag.Title = "Product Details";
@@ -16,11 +16,11 @@
         <div class="card col-8 border-0">
             <p style="font-size:25px;"><u>@Model.ProductName</u></p>
             <p>Description:<b>@Model.Description</b></p>
+            <p>Seller:<b>@Model.Seller</b></p>
             <p>
                 Price:
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b>
             </p>
-            <p>@Model.Description</p>
             <p>Category:<b>@Model.Category</b></p>
             <div class="form-inline">
                 @if (this.User?.Identity?.IsAuthenticated ?? false)
@@ -31,14 +31,6 @@
                 }
             </div>
             <p></p>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Trader Info</h5>
-                    <p class="card-text">Name: @Model.Trader.TraderName</p>
-                    <p class="card-text">Phone Number: @Model.Trader.PhoneNumber</p>
-                    <p class="card-text">Email: @Model.Trader.Email</p>
-                </div>
-            </div>
         </div>
     </div>
 </div>

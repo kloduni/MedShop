@@ -1,4 +1,5 @@
-﻿using MedShop.Core.Contracts;
+﻿using MedShop.Core.Constants;
+using MedShop.Core.Contracts;
 using MedShop.Core.Models.Product;
 using MedShop.Extensions;
 using MedShop.Models;
@@ -10,12 +11,10 @@ namespace MedShop.Controllers
     public class ProductController : BaseController
     {
         private readonly IProductService productService;
-        private readonly ITraderService traderService;
 
-        public ProductController(IProductService _productService, ITraderService _traderService)
+        public ProductController(IProductService _productService)
         {
             productService = _productService;
-            traderService = _traderService;
         }
 
         [AllowAnonymous]
@@ -39,10 +38,6 @@ namespace MedShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            if (await traderService.ExistsByIdAsync(User.Id()) == false)
-            {
-                return RedirectToAction("Become", "Trader");
-            }
 
             var model = new ProductBaseModel()
             {
@@ -55,10 +50,6 @@ namespace MedShop.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ProductBaseModel model)
         {
-            if (await traderService.ExistsByIdAsync(User.Id()) == false)
-            {
-                return RedirectToAction("Become", "Trader");
-            }
 
             if (await productService.CategoryExistsAsync(model.CategoryId) == false)
             {
@@ -71,11 +62,13 @@ namespace MedShop.Controllers
                 return View(model);
             }
 
-            int traderId = await traderService.GetTraderIdAsync(User.Id());
+            var userId = User.Id();
 
-            int id = await productService.CreateAsync(model, traderId);
+            int id = await productService.CreateAsync(model, userId);
 
-            return RedirectToAction(nameof(All));
+            TempData[MessageConstant.SuccessMessage] = "Product added successfully!";
+
+            return RedirectToAction(nameof(Details), new {id});
         }
 
         [AllowAnonymous]
@@ -89,6 +82,143 @@ namespace MedShop.Controllers
             var model = await productService.ProductDetailsByIdAsync(id);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> MyProducts()
+        {
+            IEnumerable<ProductServiceModel> myProducts;
+            var userId = User.Id();
+
+            myProducts = await productService.AllProductsByUserIdAsync(userId);
+
+            return View(myProducts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if ((await productService.ExistsAsync(id)) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            var product = await productService.ProductDetailsByIdAsync(id);
+            var categoryId = await productService.GetProductCategoryIdAsync(id);
+
+            var model = new ProductBaseModel()
+            {
+                Id = id,
+                CategoryId = categoryId,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                ProductCategories = await productService.AllCategoriesAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductBaseModel model)
+        {
+            if ((await productService.ExistsAsync(model.Id)) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+                model.ProductCategories = await productService.AllCategoriesAsync();
+
+                return View(model);
+            }
+
+            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            if ((await productService.CategoryExistsAsync(model.CategoryId)) == false)
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Category does not exist!");
+                model.ProductCategories = await productService.AllCategoriesAsync();
+
+                return View(model);
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.ProductCategories = await productService.AllCategoriesAsync();
+
+                return View(model);
+            }
+
+            await productService.EditAsync(model.Id, model);
+
+            return RedirectToAction(nameof(Details), new {model.Id});
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if ((await productService.ExistsAsync(id)) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            var product = await productService.ProductDetailsByIdAsync(id);
+            var model = new ProductServiceModel()
+            {
+                ProductName = product.ProductName,
+                Description = product.Description,
+                Category = product.Category,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Seller = product.Seller
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, ProductServiceModel model)
+        {
+            if ((await productService.ExistsAsync(id)) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+
+                return RedirectToAction(nameof(All));
+            }
+
+            await productService.DeleteAsync(id);
+
+            TempData[MessageConstant.SuccessMessage] = "Product deleted successfully!";
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

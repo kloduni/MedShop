@@ -168,27 +168,6 @@ namespace MedShop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Traders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TraderName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Traders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Traders_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -199,28 +178,39 @@ namespace MedShop.Infrastructure.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    TraderId = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersProducts",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersProducts", x => new { x.UserId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_Products_Traders_TraderId",
-                        column: x => x.TraderId,
-                        principalTable: "Traders",
+                        name: "FK_UsersProducts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,9 +220,9 @@ namespace MedShop.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "5fa2c73c-30cf-4e60-917d-ee21882d7fae", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEHTo/wgCz4mCGGrRTkr5klwDTbCtTgRWArTLOj3tpVzetNJWSPDChg72Lht1qTvgrA==", null, false, "9ebafc40-f281-4088-ae0b-e9fc0cccf6e2", false, "guest1@medshop.com" },
-                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "9986c5d6-0bbe-4ff1-a59d-ade5ac93868c", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEBe18ToTY767wMN+NK5PQ12EcrnRI9Tn5YuzB2OMjhTUvbOO7rpPB1OvDTQYgRVP8w==", null, false, "e06f86b4-77ee-4fe8-9891-96577dc22b73", false, "guest" },
-                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "ea905f8d-fc21-4810-b1a0-97f8dca3f743", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAELQo94dHFAZ53DCaOCGaxil5mcyfgnmhQaJJWWsUIZTTPLdbz6L4BoBp+RA/gEk2lQ==", null, false, "0298b524-41d1-410f-8558-663e7a2dbb9f", false, "admin" }
+                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "38c78e70-0e03-4bdf-a862-b7c5c13875a2", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEDwkFaK6BBjYGIsYdJ22Cg2IALT5vHB//JOJEBiA39x1jKrLweg1NxJLNtp1V8Ic9w==", null, false, "4f4a05da-b56c-4c6e-8ffc-20d7592f043f", false, "guest1" },
+                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "1842d91a-35d0-4467-b156-8ea904195484", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEFrrrsSExJbqQLnEe27bxbGHvbuU+qY4BJAA0dAFaenGBleIU1H7wx6XWiHKItUGzw==", null, false, "7e8d59f1-aa30-4930-87c0-46a11bf8969c", false, "guest" },
+                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "f6c0bbf7-1c9b-40f1-bd55-426facf0b0d3", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAENYKfhxbAIJNAjde4WkOXySzD8l6NNKhd6wd+bUXFei202S++wn4je6/Vu6Yf4IWwA==", null, false, "b3998ce1-af25-47a1-b372-289e355c31ed", false, "admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -250,19 +240,25 @@ namespace MedShop.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Traders",
-                columns: new[] { "Id", "PhoneNumber", "TraderName", "UserId" },
-                values: new object[] { 1, "+359888888888", "Admin", "dea12856-c198-4129-b3f3-b893d8395082" });
-
-            migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "IsActive", "Price", "ProductName", "TraderId", "UserId" },
+                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "IsActive", "Price", "ProductName" },
                 values: new object[,]
                 {
-                    { 1, 1, "Used for urination complications.", "https://www.bbraun.com/content/dam/catalog/bbraun/bbraunProductCatalog/S/AEM2015/en-01/b8/vasofix-braunuele.jpeg.transform/75/image.jpg", true, 13.76m, "Catheter", 1, null },
-                    { 2, 7, "General instrument.", "https://www.bbraun-vetcare.com/content/dam/b-braun/global/website/veterinary/products-and-therapies/wound-therapy-and-wound-closure/text_image_nadeln_DLM.jpg.transform/600/image.jpg", true, 1.50m, "Spatula", 1, null },
-                    { 3, 7, "General instrument.", "https://www.carlroth.com/medias/3607-1000Wx1000H?context=bWFzdGVyfGltYWdlc3w1NjMxNnxpbWFnZS9qcGVnfGltYWdlcy9oOTYvaGM5Lzg4MjIxNDM5NzU0NTQuanBnfGMzZDZlODk0YmE0Y2MyZWE2MmU2ZTA2ZjkxNTNjOGI3MWMyMjgyYzZmNmFjOWFjOTAwMzY5ZjJjNDVkOGEyNTE", true, 2.50m, "Scalpel", 1, null },
-                    { 4, 7, "General instrument.", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Forceps_plastic.jpg/1200px-Forceps_plastic.jpg", true, 1.00m, "Forceps", 1, null }
+                    { 1, 1, "Used for urination complications.", "https://www.bbraun.com/content/dam/catalog/bbraun/bbraunProductCatalog/S/AEM2015/en-01/b8/vasofix-braunuele.jpeg.transform/75/image.jpg", true, 13.76m, "Catheter" },
+                    { 2, 7, "General instrument.", "https://www.bbraun-vetcare.com/content/dam/b-braun/global/website/veterinary/products-and-therapies/wound-therapy-and-wound-closure/text_image_nadeln_DLM.jpg.transform/600/image.jpg", true, 1.50m, "Spatula" },
+                    { 3, 7, "General instrument.", "https://www.carlroth.com/medias/3607-1000Wx1000H?context=bWFzdGVyfGltYWdlc3w1NjMxNnxpbWFnZS9qcGVnfGltYWdlcy9oOTYvaGM5Lzg4MjIxNDM5NzU0NTQuanBnfGMzZDZlODk0YmE0Y2MyZWE2MmU2ZTA2ZjkxNTNjOGI3MWMyMjgyYzZmNmFjOWFjOTAwMzY5ZjJjNDVkOGEyNTE", true, 2.50m, "Scalpel" },
+                    { 4, 7, "General instrument.", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Forceps_plastic.jpg/1200px-Forceps_plastic.jpg", true, 1.00m, "Forceps" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UsersProducts",
+                columns: new[] { "ProductId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "dea12856-c198-4129-b3f3-b893d8395082" },
+                    { 2, "dea12856-c198-4129-b3f3-b893d8395082" },
+                    { 3, "dea12856-c198-4129-b3f3-b893d8395082" },
+                    { 4, "dea12856-c198-4129-b3f3-b893d8395082" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -310,19 +306,9 @@ namespace MedShop.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_TraderId",
-                table: "Products",
-                column: "TraderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_UserId",
-                table: "Products",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Traders_UserId",
-                table: "Traders",
-                column: "UserId");
+                name: "IX_UsersProducts_ProductId",
+                table: "UsersProducts",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -343,19 +329,19 @@ namespace MedShop.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "UsersProducts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Traders");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

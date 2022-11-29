@@ -11,6 +11,7 @@ namespace MedShop.Infrastructure.Data.Models
 
         public int Amount { get; set; }
 
+        [Range(0, 999999)]
         public decimal Price { get; set; }
 
         [ForeignKey(nameof(Product))]

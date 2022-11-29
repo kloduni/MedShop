@@ -56,7 +56,8 @@ namespace MedShop.Core.Services
                     Description = p.Description,
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
-                    Category = p.Category.Name
+                    Category = p.Category.Name,
+                    Seller = p.UsersProducts.Select(up => up.User.UserName).First()
                 })
                 .ToListAsync();
 

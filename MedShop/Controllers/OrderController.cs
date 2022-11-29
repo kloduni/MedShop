@@ -6,6 +6,8 @@ using System.Security.Claims;
 using MedShop.Core.Cart;
 using MedShop.Core.Models.ShoppingCart;
 using MedShop.Extensions;
+using MedShop.Core.Constants;
+using MedShop.Models;
 
 namespace MedShop.Controllers
 {
@@ -45,24 +47,29 @@ namespace MedShop.Controllers
             return View(response);
         }
 
+
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
-            var item = await productService.GetProductByIdAsync(id);
+            var product = await productService.GetProductByIdAsync(id);
 
-            if (item != null)
+            if (product != null)
             {
-                shoppingCart.AddItemToCart(item);
+                shoppingCart.AddItemToCart(product);
             }
-            return RedirectToAction(nameof(ShoppingCart));
+
+
+            TempData[MessageConstant.SuccessMessage] = "Added to cart!";
+
+            return RedirectToAction("All", "Product");
         }
 
         public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
         {
-            var item = await productService.GetProductByIdAsync(id);
+            var cartItem = await orderService.GetCartItemByIdAsync(id);
 
-            if (item != null)
+            if (cartItem != null)
             {
-                shoppingCart.RemoveItemFromCart(item);
+                shoppingCart.RemoveItemFromCart(cartItem);
             }
             return RedirectToAction(nameof(ShoppingCart));
         }

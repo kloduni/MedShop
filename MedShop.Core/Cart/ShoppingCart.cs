@@ -1,4 +1,6 @@
-﻿using MedShop.Infrastructure.Data;
+﻿using MedShop.Core.Contracts;
+using MedShop.Infrastructure.Data;
+using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +33,7 @@ namespace MedShop.Core.Cart
 
         public void AddItemToCart(Product product)
         {
-            var shoppingCartItem = context.ShoppingCartItems.FirstOrDefault(n => n.Product.Id == product.Id && n.ShoppingCartId == ShoppingCartId);
+            var shoppingCartItem = context.ShoppingCartItems.FirstOrDefault(i => i.Product.Id == product.Id && i.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem == null)
             {
@@ -51,9 +53,9 @@ namespace MedShop.Core.Cart
             context.SaveChanges();
         }
 
-        public void RemoveItemFromCart(Product product)
+        public void RemoveItemFromCart(ShoppingCartItem cartItem)
         {
-            var shoppingCartItem = context.ShoppingCartItems.FirstOrDefault(n => n.Product.Id == product.Id && n.ShoppingCartId == ShoppingCartId);
+            var shoppingCartItem = context.ShoppingCartItems.FirstOrDefault(i => i.Id == cartItem.Id && i.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem != null)
             {
@@ -71,7 +73,10 @@ namespace MedShop.Core.Cart
 
         public ICollection<ShoppingCartItem> GetShoppingCartItems()
         {
-            return ShoppingCartItems ?? (ShoppingCartItems = context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Include(n => n.Product).ToList());
+            return ShoppingCartItems ?? (ShoppingCartItems = context.ShoppingCartItems
+                .Where(n => n.ShoppingCartId == ShoppingCartId)
+                .Include(n => n.Product)
+                .ToList());
         }
 
         public double GetShoppingCartTotal() => context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => (double)(n.Product.Price * n.Amount)).Sum();

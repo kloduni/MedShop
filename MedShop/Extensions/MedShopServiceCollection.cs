@@ -1,4 +1,5 @@
-﻿using MedShop.Core.Contracts;
+﻿using MedShop.Core.Cart;
+using MedShop.Core.Contracts;
 using MedShop.Core.Services;
 using MedShop.Infrastructure.Data.Common;
 
@@ -10,6 +11,9 @@ namespace MedShop.Extensions.DependencyInjection
         {
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
             return services;
         }

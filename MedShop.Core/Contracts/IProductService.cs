@@ -1,5 +1,6 @@
 ﻿using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
+using MedShop.Infrastructure.Data.Models;
 
 namespace MedShop.Core.Contracts
 {
@@ -23,5 +24,6 @@ namespace MedShop.Core.Contracts
         Task<int> GetProductCategoryIdAsync(int productId);
         Task EditAsync(int productId, ProductBaseModel model);
         Task DeleteAsync(int productId);
+        Task<Product> GetProductByIdAsync(int productId);
     }
 }

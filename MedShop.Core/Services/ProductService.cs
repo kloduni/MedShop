@@ -197,5 +197,11 @@ namespace MedShop.Core.Services
 
             await repo.SaveChangesAsync();
         }
+
+        public async Task<Product> GetProductByIdAsync(int productId)
+        {
+            return await repo.All<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
+        }
     }
 }

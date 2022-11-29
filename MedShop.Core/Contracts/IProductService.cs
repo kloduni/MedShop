@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MedShop.Core.Models.Product;
+﻿using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
+using MedShop.Infrastructure.Data.Models;
 
 namespace MedShop.Core.Contracts
 {
@@ -20,8 +16,14 @@ namespace MedShop.Core.Contracts
         Task<IEnumerable<string>> AllCategoriesNamesAsync();
         Task<IEnumerable<ProductCategoryModel>> AllCategoriesAsync();
         Task<bool> CategoryExistsAsync(int categoryId);
-        Task<int> CreateAsync(ProductBaseModel model, int traderId);
+        Task<int> CreateAsync(ProductBaseModel model, string userId);
         Task<bool> ExistsAsync(int productId);
-        Task<ProductDetailsModel> ProductDetailsByIdAsync(int productId);
+        Task<ProductServiceModel> ProductDetailsByIdAsync(int productId);
+        Task<IEnumerable<ProductServiceModel>> AllProductsByUserIdAsync(string userId);
+        Task<bool> HasUserWithIdAsync(int productId, string currentUserId);
+        Task<int> GetProductCategoryIdAsync(int productId);
+        Task EditAsync(int productId, ProductBaseModel model);
+        Task DeleteAsync(int productId);
+        Task<Product> GetProductByIdAsync(int productId);
     }
 }

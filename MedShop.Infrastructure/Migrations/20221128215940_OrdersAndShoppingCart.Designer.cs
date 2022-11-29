@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedShop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221128142530_Initial")]
-    partial class Initial
+    [Migration("20221128215940_OrdersAndShoppingCart")]
+    partial class OrdersAndShoppingCart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,6 +79,58 @@ namespace MedShop.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -110,19 +162,9 @@ namespace MedShop.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("TraderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("TraderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
 
@@ -135,8 +177,7 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://www.bbraun.com/content/dam/catalog/bbraun/bbraunProductCatalog/S/AEM2015/en-01/b8/vasofix-braunuele.jpeg.transform/75/image.jpg",
                             IsActive = true,
                             Price = 13.76m,
-                            ProductName = "Catheter",
-                            TraderId = 1
+                            ProductName = "Catheter"
                         },
                         new
                         {
@@ -146,8 +187,7 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://www.bbraun-vetcare.com/content/dam/b-braun/global/website/veterinary/products-and-therapies/wound-therapy-and-wound-closure/text_image_nadeln_DLM.jpg.transform/600/image.jpg",
                             IsActive = true,
                             Price = 1.50m,
-                            ProductName = "Spatula",
-                            TraderId = 1
+                            ProductName = "Spatula"
                         },
                         new
                         {
@@ -157,8 +197,7 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://www.carlroth.com/medias/3607-1000Wx1000H?context=bWFzdGVyfGltYWdlc3w1NjMxNnxpbWFnZS9qcGVnfGltYWdlcy9oOTYvaGM5Lzg4MjIxNDM5NzU0NTQuanBnfGMzZDZlODk0YmE0Y2MyZWE2MmU2ZTA2ZjkxNTNjOGI3MWMyMjgyYzZmNmFjOWFjOTAwMzY5ZjJjNDVkOGEyNTE",
                             IsActive = true,
                             Price = 2.50m,
-                            ProductName = "Scalpel",
-                            TraderId = 1
+                            ProductName = "Scalpel"
                         },
                         new
                         {
@@ -168,12 +207,11 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Forceps_plastic.jpg/1200px-Forceps_plastic.jpg",
                             IsActive = true,
                             Price = 1.00m,
-                            ProductName = "Forceps",
-                            TraderId = 1
+                            ProductName = "Forceps"
                         });
                 });
 
-            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Trader", b =>
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.ShoppingCartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,34 +219,21 @@ namespace MedShop.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
-                    b.Property<string>("TraderName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("ShoppingCartId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProductId");
 
-                    b.ToTable("Traders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PhoneNumber = "+359888888888",
-                            TraderName = "Admin",
-                            UserId = "dea12856-c198-4129-b3f3-b893d8395082"
-                        });
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("MedShop.Infrastructure.Data.Models.User", b =>
@@ -280,15 +305,15 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ea905f8d-fc21-4810-b1a0-97f8dca3f743",
+                            ConcurrencyStamp = "a8d43842-0e5c-4dd9-a43f-d5acbf842a87",
                             Email = "admin@medshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@medshop.com",
                             NormalizedUserName = "admin@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAELQo94dHFAZ53DCaOCGaxil5mcyfgnmhQaJJWWsUIZTTPLdbz6L4BoBp+RA/gEk2lQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKVQa9lnHRwAWau5FbZpsUVkdSbuz0I2I3YRHyjBzFtp8WK9euFYXUh35thDNdQtSQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0298b524-41d1-410f-8558-663e7a2dbb9f",
+                            SecurityStamp = "be079ea1-f9e9-4055-a98c-aadbfe56484e",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -296,15 +321,15 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "89159c08-2f95-456f-91ea-75136c030b7b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9986c5d6-0bbe-4ff1-a59d-ade5ac93868c",
+                            ConcurrencyStamp = "2df79ac9-7d79-4587-ba92-a1eb5abac818",
                             Email = "guest@medshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@medshop.com",
                             NormalizedUserName = "guest@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBe18ToTY767wMN+NK5PQ12EcrnRI9Tn5YuzB2OMjhTUvbOO7rpPB1OvDTQYgRVP8w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFkCUt/zIu0/gDKCcMshakkVbvurOllZbtpORqtbbF6iywx/E6HCyGinDcQsG4GxUg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e06f86b4-77ee-4fe8-9891-96577dc22b73",
+                            SecurityStamp = "198c4bc6-3223-432d-981b-6018bfd04739",
                             TwoFactorEnabled = false,
                             UserName = "guest"
                         },
@@ -312,17 +337,54 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5fa2c73c-30cf-4e60-917d-ee21882d7fae",
+                            ConcurrencyStamp = "b86c2bb8-81f7-4af9-83c0-deb02b25e840",
                             Email = "guest1@medshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest1@medshop.com",
                             NormalizedUserName = "guest1@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHTo/wgCz4mCGGrRTkr5klwDTbCtTgRWArTLOj3tpVzetNJWSPDChg72Lht1qTvgrA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ5AQNVJeDdXftt2scQpUHEseAdohKjhVYoaTXWuy+C3Ma26Oi1+fQordtlx3ImfJA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9ebafc40-f281-4088-ae0b-e9fc0cccf6e2",
+                            SecurityStamp = "e7f9d9db-5983-4d16-ad02-91afd92e7321",
                             TwoFactorEnabled = false,
-                            UserName = "guest1@medshop.com"
+                            UserName = "guest1"
+                        });
+                });
+
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.UserProduct", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("UsersProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "dea12856-c198-4129-b3f3-b893d8395082",
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            UserId = "dea12856-c198-4129-b3f3-b893d8395082",
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            UserId = "dea12856-c198-4129-b3f3-b893d8395082",
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            UserId = "dea12856-c198-4129-b3f3-b893d8395082",
+                            ProductId = 4
                         });
                 });
 
@@ -463,6 +525,36 @@ namespace MedShop.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Order", b =>
+                {
+                    b.HasOne("MedShop.Infrastructure.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.OrderItem", b =>
+                {
+                    b.HasOne("MedShop.Infrastructure.Data.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MedShop.Infrastructure.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Product", b =>
                 {
                     b.HasOne("MedShop.Infrastructure.Data.Models.Category", "Category")
@@ -471,28 +563,35 @@ namespace MedShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MedShop.Infrastructure.Data.Models.Trader", "Trader")
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.ShoppingCartItem", b =>
+                {
+                    b.HasOne("MedShop.Infrastructure.Data.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("TraderId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MedShop.Infrastructure.Data.Models.User", null)
-                        .WithMany("Products")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Trader");
+                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Trader", b =>
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.UserProduct", b =>
                 {
+                    b.HasOne("MedShop.Infrastructure.Data.Models.Product", "Product")
+                        .WithMany("UsersProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MedShop.Infrastructure.Data.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UsersProducts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
@@ -553,9 +652,19 @@ namespace MedShop.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("MedShop.Infrastructure.Data.Models.Product", b =>
+                {
+                    b.Navigation("UsersProducts");
+                });
+
             modelBuilder.Entity("MedShop.Infrastructure.Data.Models.User", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("UsersProducts");
                 });
 #pragma warning restore 612, 618
         }

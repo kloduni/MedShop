@@ -23,7 +23,7 @@ namespace MedShop.Infrastructure.Data.Configuration
                 UserName = "admin",
                 NormalizedUserName = "admin@medshop.com",
                 Email = "admin@medshop.com",
-                NormalizedEmail = "admin@medshop.com",
+                NormalizedEmail = "admin@medshop.com"
             };
             user.PasswordHash = hasher.HashPassword(user, "admin123");
             users.Add(user);
@@ -42,7 +42,7 @@ namespace MedShop.Infrastructure.Data.Configuration
             user = new User()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                UserName = "guest1@medshop.com",
+                UserName = "guest1",
                 NormalizedUserName = "guest1@medshop.com",
                 Email = "guest1@medshop.com",
                 NormalizedEmail = "guest1@medshop.com"

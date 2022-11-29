@@ -5,7 +5,7 @@ namespace MedShop.Models
 {
     public class AllProductsQueryModel
     {
-        public const int ProductsPerPage = 3;
+        public const int ProductsPerPage = 6;
 
         public string? Category { get; set; }
 

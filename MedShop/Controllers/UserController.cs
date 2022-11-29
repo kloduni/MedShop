@@ -1,4 +1,7 @@
-﻿using MedShop.Core.Models.User;
+﻿using MedShop.Core.Contracts;
+using MedShop.Core.Models.Product;
+using MedShop.Core.Models.User;
+using MedShop.Extensions;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,11 +13,13 @@ namespace MedShop.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IProductService productService;
 
-        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager)
+        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager, IProductService _productService)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            productService = _productService;
         }
 
         [HttpGet]

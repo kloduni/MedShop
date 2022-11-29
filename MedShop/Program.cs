@@ -1,7 +1,6 @@
 using MedShop.Extensions.DependencyInjection;
 using MedShop.Infrastructure.Data;
 using MedShop.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +23,8 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddControllersWithViews();
 builder.Services.AddMedShopServices();
+
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/User/Login";

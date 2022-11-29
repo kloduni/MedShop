@@ -168,6 +168,26 @@ namespace MedShop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -187,6 +207,55 @@ namespace MedShop.Infrastructure.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCartItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    ShoppingCartId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -220,9 +289,9 @@ namespace MedShop.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "38c78e70-0e03-4bdf-a862-b7c5c13875a2", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEDwkFaK6BBjYGIsYdJ22Cg2IALT5vHB//JOJEBiA39x1jKrLweg1NxJLNtp1V8Ic9w==", null, false, "4f4a05da-b56c-4c6e-8ffc-20d7592f043f", false, "guest1" },
-                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "1842d91a-35d0-4467-b156-8ea904195484", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEFrrrsSExJbqQLnEe27bxbGHvbuU+qY4BJAA0dAFaenGBleIU1H7wx6XWiHKItUGzw==", null, false, "7e8d59f1-aa30-4930-87c0-46a11bf8969c", false, "guest" },
-                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "f6c0bbf7-1c9b-40f1-bd55-426facf0b0d3", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAENYKfhxbAIJNAjde4WkOXySzD8l6NNKhd6wd+bUXFei202S++wn4je6/Vu6Yf4IWwA==", null, false, "b3998ce1-af25-47a1-b372-289e355c31ed", false, "admin" }
+                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "eb4b142f-3204-4d9a-9a1f-db425ddeda0c", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEOF8qxUWgMPEpgHxp7fHDMdQY2HUNR0odLGPTePwpiYRSrN8ThoMLbEWV5iA/cVTYw==", null, false, "2373cbef-47b4-485c-8510-4f29b249fc71", false, "guest1" },
+                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "df4b24b7-e7f0-4285-b5c5-ba2028148be9", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEGsW6wRCtbNVzWOe4QN/DjE5vIVY0xM+6vQPOkX48wbCbFxgG1Vwcrj11+vdBlrbag==", null, false, "7ab818d5-43ab-4f11-9b72-b8b4c0fca795", false, "guest" },
+                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "09b45d5c-81de-46c8-99cd-30fe5ee7351e", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAECUGq2L0OQf74/jfD+W37q5y0d+/1359EiT8H+2rickfCu2de7ZNiT7mtEUE1BBz/w==", null, false, "2378a155-2eb6-41fa-92d7-88fa3c321275", false, "admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -301,9 +370,29 @@ namespace MedShop.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ProductId",
+                table: "OrderItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCartItems_ProductId",
+                table: "ShoppingCartItems",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersProducts_ProductId",
@@ -329,16 +418,25 @@ namespace MedShop.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCartItems");
+
+            migrationBuilder.DropTable(
                 name: "UsersProducts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

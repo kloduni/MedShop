@@ -3,7 +3,7 @@
 
 <div class="col-md-4">
     <div class="card mb-3">
-        <img class="card-img-top" src="@Model.ImageUrl" alt="Product Image">
+        <img class="align-content-center card-img-top" src="@Model.ImageUrl" style="height: 300px;max-width: 400px" alt="Product Image">
         <div class="card-body text-center">
             <h4>@Model.ProductName</h4>
             <h6>
@@ -15,6 +15,10 @@
                 <b>@Model.Category</b>
             </h6>
             <h6>
+                Seller:
+                <b>@Model.Seller</b>
+            </h6>
+            <h6>
                 Price:
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b>
             </h6>
@@ -23,8 +27,6 @@
             @if (this.User?.Identity?.IsAuthenticated ?? false)
             {
                 <a asp-controller="Order" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id" class="btn btn-success">Buy</a>
-                <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
                 <p></p>
             }
         </div>

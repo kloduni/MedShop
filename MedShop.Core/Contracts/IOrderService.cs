@@ -11,5 +11,6 @@ namespace MedShop.Core.Contracts
     {
         Task StoreOrderAsync(ICollection<ShoppingCartItem> items, string userId, string userEmailAddress);
         Task<ICollection<Order>> GetOrdersByUserIdAsync(string userId);
+        Task<ShoppingCartItem> GetCartItemByIdAsync(int cartItemId);
     }
 }

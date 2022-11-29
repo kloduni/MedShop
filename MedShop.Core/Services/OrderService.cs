@@ -51,5 +51,12 @@ namespace MedShop.Core.Services
 
             return orders;
         }
+
+        public async Task<ShoppingCartItem> GetCartItemByIdAsync(int cartItemId)
+        {
+            return await repo.AllReadonly<ShoppingCartItem>()
+                .Where(i => i.Id == cartItemId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

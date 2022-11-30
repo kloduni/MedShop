@@ -23,6 +23,8 @@ namespace MedShop.Infrastructure.Data.Models
         [StringLength(200)] 
         public string Description { get; set; } = null!;
 
+        public int Quantity { get; set; } = 0;
+
         [Required]
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }

@@ -33,36 +33,57 @@ namespace MedShop.Controllers
             return View(orders);
         }
 
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCart()
         {
             var items = shoppingCart.GetShoppingCartItems();
+
+            if (items.Count == 0)
+            {
+                TempData[MessageConstant.WarningMessage] = "Cart is empty!";
+
+                return RedirectToAction("All", "Product");
+            }
+
             shoppingCart.ShoppingCartItems = items;
 
             var response = new ShoppingCartViewModel()
             {
                 ShoppingCart = shoppingCart,
-                ShoppingCartTotal = shoppingCart.GetShoppingCartTotal()
+                ShoppingCartTotal = await shoppingCart.GetShoppingCartTotalAsync()
             };
 
             return View(response);
         }
 
 
-        public async Task<IActionResult> AddItemToShoppingCart(int id)
+        public async Task<IActionResult> AddItemToShoppingCartAsync(int id)
         {
             var product = await productService.GetProductByIdAsync(id);
 
-            if (product.UsersProducts.Any(up => up.UserId == User.Id()))
+            if (product == null)
             {
-                TempData[MessageConstant.WarningMessage] = "You own this product!.";
+                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
 
                 return RedirectToAction("All", "Product");
             }
 
-            if (product != null)
+            if (product.UsersProducts.Any(up => up.UserId == User.Id()))
             {
-                shoppingCart.AddItemToCart(product);
+                TempData[MessageConstant.WarningMessage] = "You own this product!";
+
+                return RedirectToAction("All", "Product");
             }
+
+            if (product.Quantity <= 0)
+            {
+                TempData[MessageConstant.WarningMessage] = "No quantity available!";
+
+                return RedirectToAction("All", "Product");
+            }
+
+
+            await shoppingCart.AddItemToCartAsync(product);
+
 
 
             TempData[MessageConstant.SuccessMessage] = "Added to cart!";
@@ -70,14 +91,15 @@ namespace MedShop.Controllers
             return RedirectToAction("All", "Product");
         }
 
-        public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
+        public async Task<IActionResult> RemoveItemFromShoppingCartAsync(int id)
         {
             var cartItem = await orderService.GetCartItemByIdAsync(id);
 
             if (cartItem != null)
             {
-                shoppingCart.RemoveItemFromCart(cartItem);
+                await shoppingCart.RemoveItemFromCartAsync(cartItem);
             }
+
             return RedirectToAction(nameof(ShoppingCart));
         }
 

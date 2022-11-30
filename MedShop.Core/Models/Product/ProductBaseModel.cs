@@ -26,6 +26,10 @@ namespace MedShop.Core.Models.Product
         [StringLength(200)]
         public string Description { get; set; } = null!;
 
+        [Required]
+        [Range(0, 999999)]
+        public int Quantity { get; set; }
+
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 

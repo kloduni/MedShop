@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MedShop.Core.Contracts;
+﻿using MedShop.Core.Contracts;
 using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
 using MedShop.Infrastructure.Data.Common;
@@ -57,6 +54,7 @@ namespace MedShop.Core.Services
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     Category = p.Category.Name,
+                    Quantity = p.Quantity,
                     Seller = p.UsersProducts.Select(up => up.User.UserName).First()
                 })
                 .ToListAsync();
@@ -100,7 +98,8 @@ namespace MedShop.Core.Services
                 Description = model.Description,
                 ImageUrl = model.ImageUrl,
                 Price = model.Price,
-                CategoryId = model.CategoryId,
+                Quantity = model.Quantity,
+                CategoryId = model.CategoryId
             };
 
             var userProduct = new UserProduct()
@@ -134,6 +133,7 @@ namespace MedShop.Core.Services
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     Category = p.Category.Name,
+                    Quantity = p.Quantity,
                     Seller = p.UsersProducts.Select(up => up.User.UserName).First()
                 })
                 .FirstAsync();
@@ -151,6 +151,7 @@ namespace MedShop.Core.Services
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     Category = p.Category.Name,
+                    Quantity = p.Quantity,
                     Seller = p.UsersProducts.Select(up => up.User.UserName).First()
                 })
                 .ToListAsync();
@@ -187,6 +188,7 @@ namespace MedShop.Core.Services
             product.Price = model.Price;
             product.ImageUrl = model.ImageUrl;
             product.CategoryId = model.CategoryId;
+            product.Quantity = model.Quantity;
 
             await repo.SaveChangesAsync();
         }

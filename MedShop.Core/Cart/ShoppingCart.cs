@@ -23,17 +23,17 @@ namespace MedShop.Core.Cart
 
         public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
-            ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
+            ISession? session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session;
             var context = services.GetService<ApplicationDbContext>();
-            string cartId = session.GetString("CartId") ?? Guid.NewGuid().ToString();
-            session.SetString("CartId", cartId);
+            string cartId = session?.GetString("CartId") ?? Guid.NewGuid().ToString();
+            session?.SetString("CartId", cartId);
 
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
 
-        public void AddItemToCart(Product product)
+        public async Task AddItemToCartAsync(Product product)
         {
-            var shoppingCartItem = context.ShoppingCartItems.FirstOrDefault(i => i.Product.Id == product.Id && i.ShoppingCartId == ShoppingCartId);
+            var shoppingCartItem = await context.ShoppingCartItems.FirstOrDefaultAsync(i => i.Product.Id == product.Id && i.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem == null)
             {
@@ -44,31 +44,37 @@ namespace MedShop.Core.Cart
                     Amount = 1
                 };
 
-                context.ShoppingCartItems.Add(shoppingCartItem);
+                await context.ShoppingCartItems.AddAsync(shoppingCartItem);
             }
             else
             {
                 shoppingCartItem.Amount++;
             }
-            context.SaveChanges();
+
+            product.Quantity--;
+            await context.SaveChangesAsync();
         }
 
-        public void RemoveItemFromCart(ShoppingCartItem cartItem)
+        public async Task RemoveItemFromCartAsync(ShoppingCartItem cartItem)
         {
-            var shoppingCartItem = context.ShoppingCartItems.FirstOrDefault(i => i.Id == cartItem.Id && i.ShoppingCartId == ShoppingCartId);
+            var shoppingCartItem = await context.ShoppingCartItems
+                .Include(i => i.Product)
+                .FirstOrDefaultAsync(i => i.Id == cartItem.Id && i.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem != null)
             {
                 if (shoppingCartItem.Amount > 1)
                 {
                     shoppingCartItem.Amount--;
+                    shoppingCartItem.Product.Quantity++;
                 }
                 else
                 {
+                    shoppingCartItem.Product.Quantity++;
                     context.ShoppingCartItems.Remove(shoppingCartItem);
                 }
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         public ICollection<ShoppingCartItem> GetShoppingCartItems()
@@ -79,12 +85,19 @@ namespace MedShop.Core.Cart
                 .ToList());
         }
 
-        public double GetShoppingCartTotal() => context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => (double)(n.Product.Price * n.Amount)).Sum();
+        public async Task<double> GetShoppingCartTotalAsync() => await context.ShoppingCartItems
+            .Where(n => n.ShoppingCartId == ShoppingCartId)
+            .Select(n => (double)(n.Product.Price * n.Amount))
+            .SumAsync();
 
         public async Task ClearShoppingCartAsync()
         {
-            var items = await context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
+            var items = await context.ShoppingCartItems
+                .Where(n => n.ShoppingCartId == ShoppingCartId)
+                .ToListAsync();
+
             context.ShoppingCartItems.RemoveRange(items);
+
             await context.SaveChangesAsync();
         }
     }

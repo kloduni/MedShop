@@ -52,6 +52,13 @@ namespace MedShop.Controllers
         {
             var product = await productService.GetProductByIdAsync(id);
 
+            if (product.UsersProducts.Any(up => up.UserId == User.Id()))
+            {
+                TempData[MessageConstant.WarningMessage] = "You own this product!.";
+
+                return RedirectToAction("All", "Product");
+            }
+
             if (product != null)
             {
                 shoppingCart.AddItemToCart(product);

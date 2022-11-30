@@ -202,6 +202,7 @@ namespace MedShop.Core.Services
         public async Task<Product> GetProductByIdAsync(int productId)
         {
             return await repo.All<Product>()
+                .Include(p => p.UsersProducts)
                 .FirstOrDefaultAsync(p => p.Id == productId);
         }
     }

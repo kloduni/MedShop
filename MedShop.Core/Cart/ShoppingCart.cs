@@ -1,6 +1,4 @@
-﻿using MedShop.Core.Contracts;
-using MedShop.Infrastructure.Data;
-using MedShop.Infrastructure.Data.Common;
+﻿using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +8,11 @@ namespace MedShop.Core.Cart
 {
     public class ShoppingCart
     {
-        private readonly ApplicationDbContext context;
+        private readonly IRepository repo;
 
-        public ShoppingCart(ApplicationDbContext _context)
+        public ShoppingCart(IRepository _repo)
         {
-            context = _context;
+            repo = _repo;
         }
 
         public string ShoppingCartId { get; set; }
@@ -24,7 +22,7 @@ namespace MedShop.Core.Cart
         public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
             ISession? session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session;
-            var context = services.GetService<ApplicationDbContext>();
+            var context = services.GetService<IRepository>();
             string cartId = session?.GetString("CartId") ?? Guid.NewGuid().ToString();
             session?.SetString("CartId", cartId);
 
@@ -33,7 +31,7 @@ namespace MedShop.Core.Cart
 
         public async Task AddItemToCartAsync(Product product)
         {
-            var shoppingCartItem = await context.ShoppingCartItems.FirstOrDefaultAsync(i => i.Product.Id == product.Id && i.ShoppingCartId == ShoppingCartId);
+            var shoppingCartItem = await repo.All<ShoppingCartItem>().FirstOrDefaultAsync(i => i.Product.Id == product.Id && i.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem == null)
             {
@@ -44,7 +42,7 @@ namespace MedShop.Core.Cart
                     Amount = 1
                 };
 
-                await context.ShoppingCartItems.AddAsync(shoppingCartItem);
+                await repo.AddAsync(shoppingCartItem);
             }
             else
             {
@@ -52,12 +50,12 @@ namespace MedShop.Core.Cart
             }
 
             product.Quantity--;
-            await context.SaveChangesAsync();
+            await repo.SaveChangesAsync();
         }
 
         public async Task RemoveItemFromCartAsync(ShoppingCartItem cartItem)
         {
-            var shoppingCartItem = await context.ShoppingCartItems
+            var shoppingCartItem = await repo.All<ShoppingCartItem>()
                 .Include(i => i.Product)
                 .FirstOrDefaultAsync(i => i.Id == cartItem.Id && i.ShoppingCartId == ShoppingCartId);
 
@@ -71,34 +69,34 @@ namespace MedShop.Core.Cart
                 else
                 {
                     shoppingCartItem.Product.Quantity++;
-                    context.ShoppingCartItems.Remove(shoppingCartItem);
+                    await repo.DeleteAsync<ShoppingCartItem>(shoppingCartItem.Id);
                 }
             }
-            await context.SaveChangesAsync();
+            await repo.SaveChangesAsync();
         }
 
         public ICollection<ShoppingCartItem> GetShoppingCartItems()
         {
-            return ShoppingCartItems ?? (ShoppingCartItems = context.ShoppingCartItems
+            return ShoppingCartItems ?? (ShoppingCartItems = repo.All<ShoppingCartItem>()
                 .Where(n => n.ShoppingCartId == ShoppingCartId)
                 .Include(n => n.Product)
                 .ToList());
         }
 
-        public async Task<double> GetShoppingCartTotalAsync() => await context.ShoppingCartItems
+        public async Task<double> GetShoppingCartTotalAsync() => await repo.All<ShoppingCartItem>()
             .Where(n => n.ShoppingCartId == ShoppingCartId)
             .Select(n => (double)(n.Product.Price * n.Amount))
             .SumAsync();
 
         public async Task ClearShoppingCartAsync()
         {
-            var items = await context.ShoppingCartItems
+            var items = await repo.All<ShoppingCartItem>()
                 .Where(n => n.ShoppingCartId == ShoppingCartId)
                 .ToListAsync();
 
-            context.ShoppingCartItems.RemoveRange(items);
+            repo.DeleteRange(items);
 
-            await context.SaveChangesAsync();
+            await repo.SaveChangesAsync();
         }
     }
 }

@@ -7,6 +7,7 @@ namespace MedShop.Infrastructure.Data.Configuration
 {
     internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
+
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasData(CreateUsersList());
@@ -23,7 +24,7 @@ namespace MedShop.Infrastructure.Data.Configuration
                 UserName = "admin",
                 NormalizedUserName = "admin@medshop.com",
                 Email = "admin@medshop.com",
-                NormalizedEmail = "admin@medshop.com"
+                NormalizedEmail = "admin@medshop.com",
             };
             user.PasswordHash = hasher.HashPassword(user, "admin123");
             users.Add(user);

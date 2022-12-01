@@ -1,10 +1,12 @@
 ﻿using MedShop.Core.Constants;
 using MedShop.Core.Contracts;
+using MedShop.Core.Extensions;
 using MedShop.Core.Models.Product;
 using MedShop.Extensions;
 using MedShop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace MedShop.Controllers
 {
@@ -68,11 +70,11 @@ namespace MedShop.Controllers
 
             TempData[MessageConstant.SuccessMessage] = "Product added successfully!";
 
-            return RedirectToAction(nameof(Details), new {id});
+            return RedirectToAction(nameof(Details), new {id = id, information = model.GetInformation()});
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string information)
         {
             if (await productService.ExistsAsync(id) == false)
             {
@@ -80,6 +82,13 @@ namespace MedShop.Controllers
             }
 
             var model = await productService.ProductDetailsByIdAsync(id);
+
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+
+                return RedirectToAction("All", "Product");
+            }
 
             return View(model);
         }
@@ -130,7 +139,7 @@ namespace MedShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductBaseModel model)
+        public async Task<IActionResult> Edit(ProductBaseModel model, string information)
         {
             if ((await productService.ExistsAsync(model.Id)) == false)
             {
@@ -155,6 +164,13 @@ namespace MedShop.Controllers
                 return View(model);
             }
 
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+
+                return RedirectToAction("All", "Product");
+            }
+
             if (ModelState.IsValid == false)
             {
                 model.ProductCategories = await productService.AllCategoriesAsync();
@@ -166,7 +182,7 @@ namespace MedShop.Controllers
 
             TempData[MessageConstant.SuccessMessage] = "Success!";
 
-            return RedirectToAction(nameof(Details), new {model.Id});
+            return RedirectToAction(nameof(Details), new {id = model.Id, information = model.GetInformation()});
         }
 
         [HttpGet]
@@ -202,7 +218,7 @@ namespace MedShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, ProductServiceModel model)
+        public async Task<IActionResult> Delete(int id, ProductServiceModel model, string information)
         {
             if ((await productService.ExistsAsync(id)) == false)
             {
@@ -216,6 +232,13 @@ namespace MedShop.Controllers
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
                 return RedirectToAction(nameof(All));
+            }
+
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+
+                return RedirectToAction("All", "Product");
             }
 
             await productService.DeleteAsync(id);

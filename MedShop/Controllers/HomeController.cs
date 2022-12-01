@@ -8,16 +8,14 @@ namespace MedShop.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IProductService productService;
-
-        public HomeController(IProductService _productService)
-        {
-            productService = _productService;
-        }
-
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("All", "Product");
+            }
+
             return View();
         }
 

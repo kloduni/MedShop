@@ -22,11 +22,14 @@ namespace MedShop.Core.Cart
         public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
             ISession? session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session;
-            var context = services.GetService<IRepository>();
+            var repo = services.GetService<IRepository>();
             string cartId = session?.GetString("CartId") ?? Guid.NewGuid().ToString();
             session?.SetString("CartId", cartId);
 
-            return new ShoppingCart(context) { ShoppingCartId = cartId };
+            return new ShoppingCart(repo)
+            {
+                ShoppingCartId = cartId
+            };
         }
 
         public async Task AddItemToCartAsync(Product product)

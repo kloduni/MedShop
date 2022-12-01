@@ -29,7 +29,7 @@
                         <td class="align-middle">@item.Amount</td>
                         <td class="align-middle">@((item.Amount * item.Product.Price).ToString("c"))</td>
                         <td>
-                            <a class="btn btn-danger" asp-controller="Order" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Id">Remove</a>
+                            <a class="btn btn-danger" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Id">Remove</a>
                         </td>
                     </tr>
                 }
@@ -101,7 +101,7 @@
             //Execute the payment
             onAuthorize: function (data, actions) {
                 return actions.payment.execute().then(function () {
-                    var url = '@Url.Action("CompleteOrder", "Order", new { })';
+                    var url = '@Url.Action("CompleteOrder", "ShoppingCart", new { })';
                     window.location.href = url;
                 });
             }

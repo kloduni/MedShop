@@ -16,6 +16,7 @@
         <div class="card col-8 border-0">
             <p style="font-size:25px;"><u>@Model.ProductName</u></p>
             <p>Description:<b>@Model.Description</b></p>
+            <p>Quantity:<b>@Model.Quantity</b></p>
             <p>Seller:<b>@Model.Seller</b></p>
             <p>
                 Price:
@@ -27,7 +28,7 @@
                 {
                     <a class="btn btn-warning" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
                     <a class="ml-2 btn btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-                    <a class="ml-3 btn btn-success" asp-controller="Order" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">Buy</a>
+                    <a class="ml-3 btn btn-success" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">Buy</a>
                 }
             </div>
             <p></p>

@@ -122,6 +122,7 @@ namespace MedShop.Controllers
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
                 Price = product.Price,
+                Quantity = product.Quantity,
                 ProductCategories = await productService.AllCategoriesAsync()
             };
 
@@ -163,6 +164,8 @@ namespace MedShop.Controllers
 
             await productService.EditAsync(model.Id, model);
 
+            TempData[MessageConstant.SuccessMessage] = "Success!";
+
             return RedirectToAction(nameof(Details), new {model.Id});
         }
 
@@ -191,6 +194,7 @@ namespace MedShop.Controllers
                 Category = product.Category,
                 ImageUrl = product.ImageUrl,
                 Price = product.Price,
+                Quantity= product.Quantity,
                 Seller = product.Seller
             };
 

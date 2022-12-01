@@ -6,9 +6,9 @@ namespace MedShop.ViewComponents
     public class ShoppingCartSummary : ViewComponent
     {
         private readonly ShoppingCart shoppingCart;
-        public ShoppingCartSummary(ShoppingCart _shoppingCart)
+        public ShoppingCartSummary(ShoppingCart shoppingCart)
         {
-            shoppingCart = _shoppingCart;
+            this.shoppingCart = shoppingCart;
         }
 
         public IViewComponentResult Invoke()

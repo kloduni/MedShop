@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace MedShop.Infrastructure.Data.Models
 {
@@ -22,6 +22,8 @@ namespace MedShop.Infrastructure.Data.Models
         [Required] 
         [StringLength(200)] 
         public string Description { get; set; } = null!;
+
+        public int Quantity { get; set; } = 0;
 
         [Required]
         [ForeignKey(nameof(Category))]

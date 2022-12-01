@@ -15,6 +15,10 @@
                 <b>@Model.Category</b>
             </h6>
             <h6>
+                Quantity:
+                <b>@Model.Quantity</b>
+            </h6>
+            <h6>
                 Seller:
                 <b>@Model.Seller</b>
             </h6>
@@ -26,7 +30,7 @@
             <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-warning">Details</a>
             @if (this.User?.Identity?.IsAuthenticated ?? false)
             {
-                <a asp-controller="Order" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id" class="btn btn-success">Buy</a>
+                <a asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id" class="btn btn-success">Buy</a>
                 <p></p>
             }
         </div>

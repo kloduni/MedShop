@@ -17,6 +17,8 @@ namespace MedShop.Core.Models.Product
 
         public string Category { get; set; } = null!;
 
+        public int Quantity { get; set; }
+
         public string Seller { get; set; } = null!;
     }
 }

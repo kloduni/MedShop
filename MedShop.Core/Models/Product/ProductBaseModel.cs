@@ -1,6 +1,4 @@
-﻿using MedShop.Infrastructure.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MedShop.Core.Models.Product
 {
@@ -25,6 +23,10 @@ namespace MedShop.Core.Models.Product
         [Required]
         [StringLength(200)]
         public string Description { get; set; } = null!;
+
+        [Required]
+        [Range(0, 999999)]
+        public int Quantity { get; set; }
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }

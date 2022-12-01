@@ -106,7 +106,7 @@ namespace MedShop.Controllers
         {
             await signInManager.SignOutAsync();
 
-            HttpContext.Session.Clear();
+            //HttpContext.Session.Clear();
 
             return RedirectToAction("Index", "Home");
         }

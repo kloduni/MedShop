@@ -1,7 +1,6 @@
 ﻿using MedShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using MedShop.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MedShop.Controllers

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MedShop.Core.Contracts;
 using MedShop.Core.Cart;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MedShop.Controllers
 {
@@ -13,6 +14,7 @@ namespace MedShop.Controllers
         private readonly ShoppingCart shoppingCart;
         private readonly IOrderService orderService;
         private readonly IProductService productService;
+        private IMemoryCache cache;
 
         public ShoppingCartController(ShoppingCart _shoppingCart, IOrderService _orderService, IProductService _productService)
         {
@@ -23,6 +25,7 @@ namespace MedShop.Controllers
 
         public async Task<IActionResult> ShoppingCart()
         {
+
             var items = shoppingCart.GetShoppingCartItems();
 
             if (items.Count == 0)
@@ -46,6 +49,8 @@ namespace MedShop.Controllers
         public async Task<IActionResult> AddItemToShoppingCartAsync(int id)
         {
             var product = await productService.GetProductByIdAsync(id);
+
+            
 
             if (product == null)
             {
@@ -92,8 +97,9 @@ namespace MedShop.Controllers
 
         public async Task<IActionResult> CompleteOrder()
         {
-            var items = shoppingCart.GetShoppingCartItems();
             string userId = User.Id();
+
+            var items = shoppingCart.GetShoppingCartItems();
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
             await orderService.StoreOrderAsync(items, userId, userEmailAddress);

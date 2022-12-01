@@ -1,6 +1,8 @@
 using MedShop.Extensions.DependencyInjection;
 using MedShop.Infrastructure.Data;
 using MedShop.Infrastructure.Data.Models;
+using MedShop.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,8 +26,13 @@ builder.Services.AddSession(options =>
 {
     options.Cookie.HttpOnly = true;
 });
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+});
 builder.Services.AddMedShopServices();
+builder.Services.AddResponseCaching();
 
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -60,13 +67,21 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllerRoute(
-//        name: "areas",
-//        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-//    );
-//});
-app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapRazorPages();
+});
+
+app.UseResponseCaching();
 
 app.Run();

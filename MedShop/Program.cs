@@ -19,8 +19,11 @@ builder.Services.AddDefaultIdentity<User>(options =>
         options.Password.RequiredLength = 4;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+});
 builder.Services.AddControllersWithViews();
 builder.Services.AddMedShopServices();
 

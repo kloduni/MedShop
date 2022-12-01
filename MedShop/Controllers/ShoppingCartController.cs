@@ -14,9 +14,9 @@ namespace MedShop.Controllers
         private readonly IOrderService orderService;
         private readonly IProductService productService;
 
-        public ShoppingCartController(ShoppingCart shoppingCart, IOrderService _orderService, IProductService _productService)
+        public ShoppingCartController(ShoppingCart _shoppingCart, IOrderService _orderService, IProductService _productService)
         {
-            this.shoppingCart = shoppingCart;
+            shoppingCart = _shoppingCart;
             orderService = _orderService;
             productService = _productService;
         }

@@ -164,6 +164,8 @@ namespace MedShop.Controllers
 
             await productService.EditAsync(model.Id, model);
 
+            TempData[MessageConstant.SuccessMessage] = "Success!";
+
             return RedirectToAction(nameof(Details), new {model.Id});
         }
 

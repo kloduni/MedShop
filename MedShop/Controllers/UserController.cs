@@ -1,5 +1,4 @@
-﻿using MedShop.Core.Contracts;
-using MedShop.Core.Models.User;
+﻿using MedShop.Core.Models.User;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -106,6 +105,8 @@ namespace MedShop.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+
+            HttpContext.Session.Clear();
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,8 +1,10 @@
-﻿using MedShop.Core.Models.User;
+﻿using MedShop.Core.Constants;
+using MedShop.Core.Models.User;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedShop.Controllers
 {
@@ -10,11 +12,13 @@ namespace MedShop.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager)
+        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager, RoleManager<IdentityRole> _roleManager)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            roleManager = _roleManager;
         }
 
         [HttpGet]
@@ -93,6 +97,11 @@ namespace MedShop.Controllers
 
                 if (result.Succeeded)
                 {
+                    if (await userManager.IsInRoleAsync(user, "Administrator"))
+                    {
+                        return RedirectToAction("Index", "Admin", new { area = "Admin" });
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -107,6 +116,26 @@ namespace MedShop.Controllers
             await signInManager.SignOutAsync();
 
             //HttpContext.Session.Clear();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> CreateAdmin()
+        {
+            if (await roleManager.Roles.AnyAsync(r => r.Name == "Administrator") == false)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Administrator"));
+            }
+
+            var admin = await userManager.FindByEmailAsync("admin@medshop.com");
+
+            if (await userManager.IsInRoleAsync(admin, "Administrator"))
+            {
+                TempData[MessageConstant.WarningMessage] = "Admin already exists!";
+            }
+
+            await userManager.AddToRoleAsync(admin, "Administrator");
+            TempData[MessageConstant.SuccessMessage] = "Admin created!";
 
             return RedirectToAction("Index", "Home");
         }

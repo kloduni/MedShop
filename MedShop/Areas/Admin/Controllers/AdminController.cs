@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MedShop.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Administrator")]
-    public class AdminController : Controller
+    [Route("/Admin/Admin/Index")]
+    public class AdminController : BaseController
     {
         public IActionResult Index()
         {
-            return View(nameof(Index));
+            return View();
         }
     }
 }

@@ -14,7 +14,6 @@ namespace MedShop.Controllers
         private readonly ShoppingCart shoppingCart;
         private readonly IOrderService orderService;
         private readonly IProductService productService;
-        private IMemoryCache cache;
 
         public ShoppingCartController(ShoppingCart _shoppingCart, IOrderService _orderService, IProductService _productService)
         {
@@ -98,6 +97,13 @@ namespace MedShop.Controllers
         public async Task<IActionResult> CompleteOrder()
         {
             string userId = User.Id();
+
+            if (HttpContext.Session.GetString("UserId") != userId)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Wrong account!";
+
+                return RedirectToAction("All", "Product");
+            }
 
             var items = shoppingCart.GetShoppingCartItems();
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);

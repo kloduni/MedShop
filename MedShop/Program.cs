@@ -23,7 +23,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddSession(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -34,8 +34,7 @@ builder.Services.AddControllersWithViews(options =>
     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
 });
 builder.Services.AddMedShopServices();
-builder.Services.AddResponseCaching();
-
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -74,7 +73,7 @@ app.UseEndpoints(endpoints =>
     );
     endpoints.MapControllerRoute(
       name: "areas",
-      pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
     endpoints.MapControllerRoute(
         name: "productDetails",
@@ -92,7 +91,5 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapRazorPages();
 });
-
-app.UseResponseCaching();
 
 app.Run();

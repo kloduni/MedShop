@@ -1,10 +1,12 @@
 ﻿using MedShop.Core.Constants;
 using MedShop.Core.Models.User;
+using MedShop.Extensions;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MedShop.Controllers
 {
@@ -13,12 +15,14 @@ namespace MedShop.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private IMemoryCache cache;
 
-        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager, RoleManager<IdentityRole> _roleManager)
+        public UserController(UserManager<User> _userManager, SignInManager<User> _signInManager, RoleManager<IdentityRole> _roleManager, IMemoryCache _cache)
         {
             userManager = _userManager;
             signInManager = _signInManager;
             roleManager = _roleManager;
+            cache = _cache;
         }
 
         [HttpGet]
@@ -97,6 +101,8 @@ namespace MedShop.Controllers
 
                 if (result.Succeeded)
                 {
+                    HttpContext.Session.SetString("UserId", user.Id);
+
                     if (await userManager.IsInRoleAsync(user, "Administrator"))
                     {
                         return RedirectToAction("Index", "Admin", new { area = "Admin" });

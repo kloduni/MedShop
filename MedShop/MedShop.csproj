@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
   </ItemGroup>
 
   <ItemGroup>

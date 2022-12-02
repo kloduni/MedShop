@@ -197,6 +197,7 @@ namespace MedShop.Infrastructure.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -289,9 +290,9 @@ namespace MedShop.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "eb4b142f-3204-4d9a-9a1f-db425ddeda0c", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1@medshop.com", "AQAAAAEAACcQAAAAEOF8qxUWgMPEpgHxp7fHDMdQY2HUNR0odLGPTePwpiYRSrN8ThoMLbEWV5iA/cVTYw==", null, false, "2373cbef-47b4-485c-8510-4f29b249fc71", false, "guest1" },
-                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "df4b24b7-e7f0-4285-b5c5-ba2028148be9", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest@medshop.com", "AQAAAAEAACcQAAAAEGsW6wRCtbNVzWOe4QN/DjE5vIVY0xM+6vQPOkX48wbCbFxgG1Vwcrj11+vdBlrbag==", null, false, "7ab818d5-43ab-4f11-9b72-b8b4c0fca795", false, "guest" },
-                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "09b45d5c-81de-46c8-99cd-30fe5ee7351e", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin@medshop.com", "AQAAAAEAACcQAAAAECUGq2L0OQf74/jfD+W37q5y0d+/1359EiT8H+2rickfCu2de7ZNiT7mtEUE1BBz/w==", null, false, "2378a155-2eb6-41fa-92d7-88fa3c321275", false, "admin" }
+                    { "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e", 0, "23a9e6ba-beb5-4215-a6a3-91a598abc6b9", "guest1@medshop.com", false, false, null, "guest1@medshop.com", "guest1", "AQAAAAEAACcQAAAAEAmeYRYm9+l0O65FXIeUZriZPQoMCqpqeEdhKgQylqMNSTn3zE5hRxwHAtBK8AMFwQ==", null, false, "20b9cd23-e3ad-4fa7-ae3d-07616f82222f", false, "guest1" },
+                    { "89159c08-2f95-456f-91ea-75136c030b7b", 0, "0749268a-5356-4d70-8f27-6d00ad46e1f5", "guest@medshop.com", false, false, null, "guest@medshop.com", "guest", "AQAAAAEAACcQAAAAECQv7EBcCk6yzA6/XI3j6QXzVzuM/OWxz61XyD6LTYdk7Gk1G7jXnwv8tbLu8zD56Q==", null, false, "c72fd83f-c68e-4f08-aae5-ca55aede3f6f", false, "guest" },
+                    { "dea12856-c198-4129-b3f3-b893d8395082", 0, "479cd3a4-8145-474a-a822-62d112132259", "admin@medshop.com", false, false, null, "admin@medshop.com", "admin", "AQAAAAEAACcQAAAAEA58S2+z0lpZmg0gCOVXd5MAJ5FbAxjkO+uiFXJmiVfGNy1v5h64iXBOULZO9b0+ww==", null, false, "ea685ed6-2c52-4963-9ea0-e27b6ba0fb33", false, "admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -310,13 +311,13 @@ namespace MedShop.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "IsActive", "Price", "ProductName" },
+                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "IsActive", "Price", "ProductName", "Quantity" },
                 values: new object[,]
                 {
-                    { 1, 1, "Used for urination complications.", "https://www.bbraun.com/content/dam/catalog/bbraun/bbraunProductCatalog/S/AEM2015/en-01/b8/vasofix-braunuele.jpeg.transform/75/image.jpg", true, 13.76m, "Catheter" },
-                    { 2, 7, "General instrument.", "https://www.bbraun-vetcare.com/content/dam/b-braun/global/website/veterinary/products-and-therapies/wound-therapy-and-wound-closure/text_image_nadeln_DLM.jpg.transform/600/image.jpg", true, 1.50m, "Spatula" },
-                    { 3, 7, "General instrument.", "https://www.carlroth.com/medias/3607-1000Wx1000H?context=bWFzdGVyfGltYWdlc3w1NjMxNnxpbWFnZS9qcGVnfGltYWdlcy9oOTYvaGM5Lzg4MjIxNDM5NzU0NTQuanBnfGMzZDZlODk0YmE0Y2MyZWE2MmU2ZTA2ZjkxNTNjOGI3MWMyMjgyYzZmNmFjOWFjOTAwMzY5ZjJjNDVkOGEyNTE", true, 2.50m, "Scalpel" },
-                    { 4, 7, "General instrument.", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Forceps_plastic.jpg/1200px-Forceps_plastic.jpg", true, 1.00m, "Forceps" }
+                    { 1, 1, "Used for urination complications.", "https://www.bbraun.com/content/dam/catalog/bbraun/bbraunProductCatalog/S/AEM2015/en-01/b8/vasofix-braunuele.jpeg.transform/75/image.jpg", true, 13.76m, "Catheter", 10 },
+                    { 2, 7, "General instrument.", "https://www.bbraun-vetcare.com/content/dam/b-braun/global/website/veterinary/products-and-therapies/wound-therapy-and-wound-closure/text_image_nadeln_DLM.jpg.transform/600/image.jpg", true, 1.50m, "Spatula", 0 },
+                    { 3, 7, "General instrument.", "https://www.carlroth.com/medias/3607-1000Wx1000H?context=bWFzdGVyfGltYWdlc3w1NjMxNnxpbWFnZS9qcGVnfGltYWdlcy9oOTYvaGM5Lzg4MjIxNDM5NzU0NTQuanBnfGMzZDZlODk0YmE0Y2MyZWE2MmU2ZTA2ZjkxNTNjOGI3MWMyMjgyYzZmNmFjOWFjOTAwMzY5ZjJjNDVkOGEyNTE", true, 2.50m, "Scalpel", 10 },
+                    { 4, 7, "General instrument.", "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Forceps_plastic.jpg/1200px-Forceps_plastic.jpg", true, 1.00m, "Forceps", 10 }
                 });
 
             migrationBuilder.InsertData(

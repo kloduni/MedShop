@@ -101,8 +101,11 @@ namespace MedShop.Controllers
 
                 if (result.Succeeded)
                 {
-                    HttpContext.Session.SetString("UserId", user.Id);
-
+                    if (HttpContext.Session.GetString("UserId") == null)
+                    {
+                        HttpContext.Session.SetString("UserId", user.Id);
+                    }
+                    
                     if (await userManager.IsInRoleAsync(user, "Administrator"))
                     {
                         return RedirectToAction("Index", "Admin", new { area = "Admin" });

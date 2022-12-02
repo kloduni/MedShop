@@ -10,6 +10,11 @@ namespace MedShop.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.IsInRole("Administrator"))
+            {
+                return RedirectToAction("Index", "Admin", new { area = "Admin" });
+            }
+
             if (User?.Identity?.IsAuthenticated ?? false)
             {
                 return RedirectToAction("All", "Product");

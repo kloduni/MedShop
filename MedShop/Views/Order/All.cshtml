@@ -1,55 +1,60 @@
-﻿@model ICollection<MedShop.Infrastructure.Data.Models.Order>
+﻿@model ICollection<AllOrdersServiceModel>
 
 @{
-    ViewData["Title"] = "All orders";
+    ViewData["Title"] = "Completed orders";
 }
 
-<div class="row">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h4>List of all your orders</h4>
-        </p>
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <th>User</th>
-                    }
-                    
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model)
-                {
+@if (Model.Any())
+{
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <p>
+                <h4>Your orders</h4>
+            </p>
+
+            <table class="table">
+                <thead>
                     <tr>
-                        <td class="align-middle">@order.Id</td>
-                        <td class="align-middle">
-                            <ul style="list-style-type:none">
-                                @foreach (var item in order.OrderItems)
-                                {
-                                    <li>
-                                        <div class="alert alert-info" role="alert">
-                                            <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c")] - @item.Product.ProductName
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </td>
-                        <td class="align-middle">
-                            @order.OrderItems.Select(m => m.Product.Price * m.Amount).Sum().ToString("c")
-                        </td>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <td class="align-middle"> @order.User.UserName </td>
-                        }
+                        <th>Order ID</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Buyer</th>
+
+
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@order.Id</td>
+                            <td class="align-middle">
+                                <ul style="list-style-type:none">
+                                    @foreach (var item in order.OrderItems)
+                                    {
+                                        <li>
+                                            <div class="alert alert-info" role="alert">
+                                                <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c")] - @item.ProductName
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
+                            <td class="align-middle">
+                                @order.TotalPrice
+                            </td>
+                            <td class="align-middle"> @order.UserName </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <h3 class="text-center"> You have no orders yet!</h3>
+}

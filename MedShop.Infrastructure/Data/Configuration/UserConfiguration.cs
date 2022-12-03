@@ -9,6 +9,9 @@ namespace MedShop.Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.Property(p => p.IsActive)
+                .HasDefaultValue(true);
+            
             builder.HasData(CreateUsersList());
         }
 

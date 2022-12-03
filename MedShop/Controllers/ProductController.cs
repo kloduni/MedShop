@@ -6,7 +6,6 @@ using MedShop.Extensions;
 using MedShop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace MedShop.Controllers
 {
@@ -113,7 +112,7 @@ namespace MedShop.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
@@ -149,7 +148,7 @@ namespace MedShop.Controllers
                 return View(model);
             }
 
-            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
@@ -182,7 +181,7 @@ namespace MedShop.Controllers
 
             TempData[MessageConstant.SuccessMessage] = "Success!";
 
-            return RedirectToAction(nameof(Details), new {id = model.Id, information = model.GetInformation()});
+            return RedirectToAction("All", "Product");
         }
 
         [HttpGet]
@@ -195,7 +194,7 @@ namespace MedShop.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
@@ -227,7 +226,7 @@ namespace MedShop.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 

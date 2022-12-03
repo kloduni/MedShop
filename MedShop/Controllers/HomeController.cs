@@ -12,7 +12,7 @@ namespace MedShop.Controllers
         {
             if (User.IsInRole("Administrator"))
             {
-                return RedirectToAction("Index", "Admin", new { area = "Admin" });
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
             }
 
             if (User?.Identity?.IsAuthenticated ?? false)

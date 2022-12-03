@@ -2,7 +2,7 @@
 
 namespace MedShop.Areas.Admin.Controllers
 {
-    public class AdminController : BaseController
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {

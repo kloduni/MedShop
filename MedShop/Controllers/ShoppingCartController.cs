@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MedShop.Core.Contracts;
 using MedShop.Core.Cart;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MedShop.Controllers
 {
@@ -58,7 +57,7 @@ namespace MedShop.Controllers
                 return RedirectToAction("All", "Product");
             }
 
-            if (product.UsersProducts.Any(up => up.UserId == User.Id()))
+            if (product.UsersProducts.Any(up => up.UserId == User.Id()) && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.WarningMessage] = "You own this product!";
 

@@ -1,4 +1,4 @@
-using MedShop.Extensions.DependencyInjection;
+using MedShop.Extensions;
 using MedShop.Infrastructure.Data;
 using MedShop.Infrastructure.Data.Models;
 using MedShop.ModelBinders;

@@ -1,4 +1,6 @@
-﻿using MedShop.Core.Contracts;
+﻿using System.Globalization;
+using MedShop.Core.Contracts;
+using MedShop.Core.Models.Order;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +52,31 @@ namespace MedShop.Core.Services
                 .ToListAsync();
 
             return orders;
+        }
+
+        public async Task<ICollection<AllOrdersServiceModel>> GetOrdersModelByUserIdAsync(string userId)
+        {
+            var orderItems = await repo.AllReadonly<OrderItem>()
+                .Where(oi => oi.Order.UserId == userId)
+                .Select(oi => new OrderItemServiceModel()
+                {
+                    Id = oi.Id,
+                    Price = oi.Price,
+                    Amount = oi.Amount,
+                    ProductName = oi.Product.ProductName
+                })
+                .ToListAsync();
+
+            return await repo.AllReadonly<Order>()
+                .Where(o => o.UserId == userId)
+                .Select(o => new AllOrdersServiceModel()
+                {
+                    Id = o.Id,
+                    UserName = o.User.UserName,
+                    OrderItems = orderItems,
+                    TotalPrice = $"${orderItems.Select(i => i.Price * i.Amount).Sum().ToString()}"
+                })
+                .ToListAsync();
         }
 
         public async Task<ShoppingCartItem> GetCartItemByIdAsync(int cartItemId)

@@ -1,6 +1,5 @@
 ﻿using MedShop.Core.Constants;
 using MedShop.Core.Models.User;
-using MedShop.Extensions;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -97,6 +96,13 @@ namespace MedShop.Controllers
 
             if (user != null)
             {
+                if (!user.IsActive)
+                {
+                    TempData[MessageConstant.ErrorMessage] = "You have been banned!";
+
+                    return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                }
+
                 var result = await signInManager.PasswordSignInAsync(user, model.Password, isPersistent: false, lockoutOnFailure: false);
 
                 if (result.Succeeded)
@@ -108,7 +114,7 @@ namespace MedShop.Controllers
                     
                     if (await userManager.IsInRoleAsync(user, "Administrator"))
                     {
-                        return RedirectToAction("Index", "Admin", new { area = "Admin" });
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
 
                     return RedirectToAction("Index", "Home");
@@ -123,8 +129,6 @@ namespace MedShop.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-
-            //HttpContext.Session.Clear();
 
             return RedirectToAction("Index", "Home");
         }

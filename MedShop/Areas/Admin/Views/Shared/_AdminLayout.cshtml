@@ -70,7 +70,15 @@
 
     <footer class="border-top footer text-dark">
         <div class="container">
-            &copy; @DateTime.UtcNow - MedShop Administrator
+            &copy; MedShop Administrator - <a id="time"></a>
+            <script>
+                setInterval(myTimer, 1000);
+
+                function myTimer() {
+                    const d = new Date();
+                    document.getElementById("time").innerHTML = d.toLocaleTimeString();
+                }
+            </script>
         </div>
     </footer>
 

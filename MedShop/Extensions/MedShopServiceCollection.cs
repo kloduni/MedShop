@@ -1,9 +1,11 @@
 ﻿using MedShop.Core.Cart;
 using MedShop.Core.Contracts;
+using MedShop.Core.Contracts.Admin;
 using MedShop.Core.Services;
+using MedShop.Core.Services.Admin;
 using MedShop.Infrastructure.Data.Common;
 
-namespace MedShop.Extensions.DependencyInjection
+namespace MedShop.Extensions
 {
     public static class MedShopServiceCollection
     {
@@ -14,6 +16,7 @@ namespace MedShop.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MedShop.Core.Contracts;
 
 namespace MedShop.Core.Models.Product
 {
-    public class ProductBaseModel
+    public class ProductBaseModel : IProductModel
     {
         [Key]
         public int Id { get; set; }

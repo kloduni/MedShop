@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedShop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221129125533_Initial")]
-    partial class Initial
+    [Migration("20221203175434_UserActiveStatus")]
+    partial class UserActiveStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,6 +162,9 @@ namespace MedShop.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -177,7 +180,8 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://www.bbraun.com/content/dam/catalog/bbraun/bbraunProductCatalog/S/AEM2015/en-01/b8/vasofix-braunuele.jpeg.transform/75/image.jpg",
                             IsActive = true,
                             Price = 13.76m,
-                            ProductName = "Catheter"
+                            ProductName = "Catheter",
+                            Quantity = 10
                         },
                         new
                         {
@@ -187,7 +191,8 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://www.bbraun-vetcare.com/content/dam/b-braun/global/website/veterinary/products-and-therapies/wound-therapy-and-wound-closure/text_image_nadeln_DLM.jpg.transform/600/image.jpg",
                             IsActive = true,
                             Price = 1.50m,
-                            ProductName = "Spatula"
+                            ProductName = "Spatula",
+                            Quantity = 0
                         },
                         new
                         {
@@ -197,7 +202,8 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://www.carlroth.com/medias/3607-1000Wx1000H?context=bWFzdGVyfGltYWdlc3w1NjMxNnxpbWFnZS9qcGVnfGltYWdlcy9oOTYvaGM5Lzg4MjIxNDM5NzU0NTQuanBnfGMzZDZlODk0YmE0Y2MyZWE2MmU2ZTA2ZjkxNTNjOGI3MWMyMjgyYzZmNmFjOWFjOTAwMzY5ZjJjNDVkOGEyNTE",
                             IsActive = true,
                             Price = 2.50m,
-                            ProductName = "Scalpel"
+                            ProductName = "Scalpel",
+                            Quantity = 10
                         },
                         new
                         {
@@ -207,7 +213,8 @@ namespace MedShop.Infrastructure.Migrations
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Forceps_plastic.jpg/1200px-Forceps_plastic.jpg",
                             IsActive = true,
                             Price = 1.00m,
-                            ProductName = "Forceps"
+                            ProductName = "Forceps",
+                            Quantity = 10
                         });
                 });
 
@@ -254,6 +261,11 @@ namespace MedShop.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -305,15 +317,16 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "09b45d5c-81de-46c8-99cd-30fe5ee7351e",
+                            ConcurrencyStamp = "471eeb4d-ee8f-477e-b413-b9d2ca8a62b2",
                             Email = "admin@medshop.com",
                             EmailConfirmed = false,
+                            IsActive = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@medshop.com",
-                            NormalizedUserName = "admin@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAECUGq2L0OQf74/jfD+W37q5y0d+/1359EiT8H+2rickfCu2de7ZNiT7mtEUE1BBz/w==",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAENbGjG2apBZ2gXgxXM7vx0DxIsvts21NMILKEBW7c9xjxbJWMrjWETWlxzLyL/OsUw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2378a155-2eb6-41fa-92d7-88fa3c321275",
+                            SecurityStamp = "11ea21be-e830-4b6b-8ade-1c5eb9e7b36f",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -321,15 +334,16 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "89159c08-2f95-456f-91ea-75136c030b7b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "df4b24b7-e7f0-4285-b5c5-ba2028148be9",
+                            ConcurrencyStamp = "4f148428-2a07-4cc5-bd4d-1714053a38c0",
                             Email = "guest@medshop.com",
                             EmailConfirmed = false,
+                            IsActive = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@medshop.com",
-                            NormalizedUserName = "guest@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGsW6wRCtbNVzWOe4QN/DjE5vIVY0xM+6vQPOkX48wbCbFxgG1Vwcrj11+vdBlrbag==",
+                            NormalizedUserName = "guest",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGu+klWZ+b9sc6J3ejCZtctbvRWv5SWBHpKmzwylB+oQyUzEHG0xMbVe7C5kfTiGsQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7ab818d5-43ab-4f11-9b72-b8b4c0fca795",
+                            SecurityStamp = "b885dca5-8946-46fc-9e5c-908ddc169785",
                             TwoFactorEnabled = false,
                             UserName = "guest"
                         },
@@ -337,15 +351,16 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eb4b142f-3204-4d9a-9a1f-db425ddeda0c",
+                            ConcurrencyStamp = "eade2a63-45c0-4935-95ab-8fc2b7d17ac0",
                             Email = "guest1@medshop.com",
                             EmailConfirmed = false,
+                            IsActive = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest1@medshop.com",
-                            NormalizedUserName = "guest1@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOF8qxUWgMPEpgHxp7fHDMdQY2HUNR0odLGPTePwpiYRSrN8ThoMLbEWV5iA/cVTYw==",
+                            NormalizedUserName = "guest1",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIpk3E+ISygoGa6Lag9yIOWx6zY7sIL0Hy/8QBsNQaDo9snUG8CWLbzC+3Dpto/CRQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2373cbef-47b4-485c-8510-4f29b249fc71",
+                            SecurityStamp = "777b5a56-7ceb-4947-b44a-4dd2ea29e85d",
                             TwoFactorEnabled = false,
                             UserName = "guest1"
                         });

@@ -1,6 +1,9 @@
-﻿using MedShop.Core.Contracts;
+﻿using System.Globalization;
+using MedShop.Core.Contracts;
+using MedShop.Core.Models.Order;
 using Microsoft.AspNetCore.Mvc;
 using MedShop.Extensions;
+using MedShop.Models;
 
 namespace MedShop.Controllers
 {
@@ -16,10 +19,9 @@ namespace MedShop.Controllers
         public async Task<IActionResult> All()
         {
             string userId = User.Id();
+            var model = await orderService.GetOrdersModelByUserIdAsync(userId);
 
-            var orders = await orderService.GetOrdersByUserIdAsync(userId);
-
-            return View(orders);
+            return View(model);
         }
     }
 }

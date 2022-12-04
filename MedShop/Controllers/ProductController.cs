@@ -1,5 +1,6 @@
 ﻿using MedShop.Core.Constants;
 using MedShop.Core.Contracts;
+using MedShop.Core.Extensions;
 using MedShop.Core.Models.Product;
 using MedShop.Extensions;
 using MedShop.Models;
@@ -68,11 +69,11 @@ namespace MedShop.Controllers
 
             TempData[MessageConstant.SuccessMessage] = "Product added successfully!";
 
-            return RedirectToAction(nameof(Details), new {id});
+            return RedirectToAction(nameof(Details), new {id = id, information = model.GetInformation()});
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string information)
         {
             if (await productService.ExistsAsync(id) == false)
             {
@@ -80,6 +81,13 @@ namespace MedShop.Controllers
             }
 
             var model = await productService.ProductDetailsByIdAsync(id);
+
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+
+                return RedirectToAction("All", "Product");
+            }
 
             return View(model);
         }
@@ -104,7 +112,7 @@ namespace MedShop.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
@@ -130,7 +138,7 @@ namespace MedShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductBaseModel model)
+        public async Task<IActionResult> Edit(ProductBaseModel model, string information)
         {
             if ((await productService.ExistsAsync(model.Id)) == false)
             {
@@ -140,7 +148,7 @@ namespace MedShop.Controllers
                 return View(model);
             }
 
-            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
@@ -155,6 +163,13 @@ namespace MedShop.Controllers
                 return View(model);
             }
 
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+
+                return RedirectToAction("All", "Product");
+            }
+
             if (ModelState.IsValid == false)
             {
                 model.ProductCategories = await productService.AllCategoriesAsync();
@@ -166,7 +181,7 @@ namespace MedShop.Controllers
 
             TempData[MessageConstant.SuccessMessage] = "Success!";
 
-            return RedirectToAction(nameof(Details), new {model.Id});
+            return RedirectToAction("All", "Product");
         }
 
         [HttpGet]
@@ -179,7 +194,7 @@ namespace MedShop.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
@@ -202,7 +217,7 @@ namespace MedShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, ProductServiceModel model)
+        public async Task<IActionResult> Delete(int id, ProductServiceModel model, string information)
         {
             if ((await productService.ExistsAsync(id)) == false)
             {
@@ -211,11 +226,18 @@ namespace MedShop.Controllers
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
 
                 return RedirectToAction(nameof(All));
+            }
+
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+
+                return RedirectToAction("All", "Product");
             }
 
             await productService.DeleteAsync(id);

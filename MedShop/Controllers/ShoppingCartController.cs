@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MedShop.Core.Contracts;
 using MedShop.Core.Cart;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace MedShop.Controllers
 {
@@ -14,7 +13,6 @@ namespace MedShop.Controllers
         private readonly ShoppingCart shoppingCart;
         private readonly IOrderService orderService;
         private readonly IProductService productService;
-        private IMemoryCache cache;
 
         public ShoppingCartController(ShoppingCart _shoppingCart, IOrderService _orderService, IProductService _productService)
         {
@@ -59,7 +57,7 @@ namespace MedShop.Controllers
                 return RedirectToAction("All", "Product");
             }
 
-            if (product.UsersProducts.Any(up => up.UserId == User.Id()))
+            if (product.UsersProducts.Any(up => up.UserId == User.Id()) && User.IsInRole("Administrator") == false)
             {
                 TempData[MessageConstant.WarningMessage] = "You own this product!";
 
@@ -98,6 +96,13 @@ namespace MedShop.Controllers
         public async Task<IActionResult> CompleteOrder()
         {
             string userId = User.Id();
+
+            if (HttpContext.Session.GetString("UserId") != userId)
+            {
+                TempData[MessageConstant.ErrorMessage] = "Wrong account!";
+
+                return RedirectToAction("All", "Product");
+            }
 
             var items = shoppingCart.GetShoppingCartItems();
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);

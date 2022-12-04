@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MedShop</title>
+    <title>@ViewData["Title"] - MedShop Administrator</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/Lumen.css" />
     <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
@@ -17,7 +17,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">MedShop</a>
+                <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">MedShop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,28 +27,25 @@
                         <li class="nav-item">
                             <a class="nav-link active" asp-controller="Product" asp-action="All">All Products</a>
                         </li>
-                        @if (User?.Identity?.IsAuthenticated ?? false)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="MyProducts">My Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="Add">Add Product</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Orders
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-bg-primary" asp-controller="Order" asp-action="All">Completed Orders</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-bg-primary" asp-controller="ShoppingCart" asp-action="ShoppingCart">Cart</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="MyProducts">My Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="Add">Add Product</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Orders
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link text-bg-primary" asp-controller="Order" asp-action="All">Completed Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-bg-primary" asp-controller="ShoppingCart" asp-action="ShoppingCart">Cart</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
 
                     <ul class="navbar-nav">
@@ -68,7 +65,7 @@
 
     <footer class="border-top footer text-dark">
         <div class="container">
-            &copy; MedShop - <a id="time"></a>
+            &copy; MedShop Administrator - <a id="time"></a>
             <script>
                 setInterval(myTimer, 1000);
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedShop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221130120423_ProductQuantity")]
-    partial class ProductQuantity
+    [Migration("20221202130602_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -192,7 +192,7 @@ namespace MedShop.Infrastructure.Migrations
                             IsActive = true,
                             Price = 1.50m,
                             ProductName = "Spatula",
-                            Quantity = 10
+                            Quantity = 0
                         },
                         new
                         {
@@ -312,15 +312,15 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cd928cf7-bb81-4067-b710-8699a0bc3a72",
+                            ConcurrencyStamp = "479cd3a4-8145-474a-a822-62d112132259",
                             Email = "admin@medshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@medshop.com",
-                            NormalizedUserName = "admin@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHyRP5TFQS8/UsBDkoFgFSf48CNQ74bpbkRh+QtE0KFz7+l+6Fnl9apwgEg7izsUew==",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA58S2+z0lpZmg0gCOVXd5MAJ5FbAxjkO+uiFXJmiVfGNy1v5h64iXBOULZO9b0+ww==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cf25ad05-7cb0-47ac-afd9-47a9c0f6415f",
+                            SecurityStamp = "ea685ed6-2c52-4963-9ea0-e27b6ba0fb33",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -328,15 +328,15 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "89159c08-2f95-456f-91ea-75136c030b7b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0a45723e-d8fd-451c-9871-6ea8112e0343",
+                            ConcurrencyStamp = "0749268a-5356-4d70-8f27-6d00ad46e1f5",
                             Email = "guest@medshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@medshop.com",
-                            NormalizedUserName = "guest@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAENZOH5C0vG86kFPDDbi78BnNf3L+GIyuLSjb2Ae4ABlk7S3xm+ZRTy+YktcdrUoPUg==",
+                            NormalizedUserName = "guest",
+                            PasswordHash = "AQAAAAEAACcQAAAAECQv7EBcCk6yzA6/XI3j6QXzVzuM/OWxz61XyD6LTYdk7Gk1G7jXnwv8tbLu8zD56Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2fce25e2-4770-4352-855e-522301e1358e",
+                            SecurityStamp = "c72fd83f-c68e-4f08-aae5-ca55aede3f6f",
                             TwoFactorEnabled = false,
                             UserName = "guest"
                         },
@@ -344,15 +344,15 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8b118b98-2fba-46c0-9bc7-8baa900170dd",
+                            ConcurrencyStamp = "23a9e6ba-beb5-4215-a6a3-91a598abc6b9",
                             Email = "guest1@medshop.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest1@medshop.com",
-                            NormalizedUserName = "guest1@medshop.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFvVHrPh451S0j5wqGmVr9xumnyo7qc0w9cFJCmBANikE6Vo1GkpRJqINNi1YwF2Gw==",
+                            NormalizedUserName = "guest1",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAmeYRYm9+l0O65FXIeUZriZPQoMCqpqeEdhKgQylqMNSTn3zE5hRxwHAtBK8AMFwQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0b6b4000-4cff-45ae-ae76-e2d9aef4f1a1",
+                            SecurityStamp = "20b9cd23-e3ad-4fa7-ae3d-07616f82222f",
                             TwoFactorEnabled = false,
                             UserName = "guest1"
                         });

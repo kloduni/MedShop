@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using MedShop.Core.Contracts;
+﻿using MedShop.Core.Contracts;
 using MedShop.Core.Models.Order;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;

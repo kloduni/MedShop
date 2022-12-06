@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MedShop.Core.Contracts.Admin;
+﻿using MedShop.Core.Contracts.Admin;
 using MedShop.Core.Models.Admin;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;

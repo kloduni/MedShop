@@ -1,11 +1,13 @@
-﻿using MedShop.Core.Constants;
-using MedShop.Core.Contracts;
+﻿using MedShop.Core.Contracts;
 using MedShop.Core.Extensions;
 using MedShop.Core.Models.Product;
 using MedShop.Extensions;
 using MedShop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static MedShop.Core.Constants.Product.ProductConstants;
+using static MedShop.Core.Constants.MessageConstants;
+using static MedShop.Areas.Admin.AdminConstants;
 
 namespace MedShop.Controllers
 {
@@ -54,7 +56,7 @@ namespace MedShop.Controllers
 
             if (await productService.CategoryExistsAsync(model.CategoryId) == false)
             {
-                ModelState.AddModelError(nameof(model.CategoryId), "Category does not exist.");
+                ModelState.AddModelError(nameof(model.CategoryId), CategoryDoesNotExist);
             }
 
             if (!ModelState.IsValid)
@@ -67,7 +69,7 @@ namespace MedShop.Controllers
 
             int id = await productService.CreateAsync(model, userId);
 
-            TempData[MessageConstant.SuccessMessage] = "Product added successfully!";
+            TempData[SuccessMessage] = ProductAdded;
 
             return RedirectToAction(nameof(Details), new {id = id, information = model.GetInformation()});
         }
@@ -84,9 +86,9 @@ namespace MedShop.Controllers
 
             if (information != model.GetInformation())
             {
-                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+                TempData[ErrorMessage] = NoExperiments;
 
-                return RedirectToAction("All", "Product");
+                return RedirectToAction(nameof(All));
             }
 
             return View(model);
@@ -107,14 +109,14 @@ namespace MedShop.Controllers
         {
             if ((await productService.ExistsAsync(id)) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+                TempData[ErrorMessage] = ProductDoesNotExist;
 
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole(AdminRoleName) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+                TempData[ErrorMessage] = ProductDoesNotBelongToUser;
 
                 return RedirectToAction(nameof(All));
             }
@@ -142,22 +144,22 @@ namespace MedShop.Controllers
         {
             if ((await productService.ExistsAsync(model.Id)) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+                TempData[ErrorMessage] = ProductDoesNotExist;
                 model.ProductCategories = await productService.AllCategoriesAsync();
 
                 return View(model);
             }
 
-            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false && User.IsInRole("Administrator") == false)
+            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false && User.IsInRole(AdminRoleName) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+                TempData[ErrorMessage] = ProductDoesNotBelongToUser;
 
                 return RedirectToAction(nameof(All));
             }
 
             if ((await productService.CategoryExistsAsync(model.CategoryId)) == false)
             {
-                ModelState.AddModelError(nameof(model.CategoryId), "Category does not exist!");
+                ModelState.AddModelError(nameof(model.CategoryId), CategoryDoesNotExist);
                 model.ProductCategories = await productService.AllCategoriesAsync();
 
                 return View(model);
@@ -165,9 +167,9 @@ namespace MedShop.Controllers
 
             if (information != model.GetInformation())
             {
-                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+                TempData[ErrorMessage] = NoExperiments;
 
-                return RedirectToAction("All", "Product");
+                return RedirectToAction(nameof(All));
             }
 
             if (ModelState.IsValid == false)
@@ -179,9 +181,9 @@ namespace MedShop.Controllers
 
             await productService.EditAsync(model.Id, model);
 
-            TempData[MessageConstant.SuccessMessage] = "Success!";
+            TempData[SuccessMessage] = SuccessMessage;
 
-            return RedirectToAction("All", "Product");
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -189,14 +191,14 @@ namespace MedShop.Controllers
         {
             if ((await productService.ExistsAsync(id)) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+                TempData[ErrorMessage] = ProductDoesNotExist;
 
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole(AdminRoleName) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+                TempData[ErrorMessage] = ProductDoesNotBelongToUser;
 
                 return RedirectToAction(nameof(All));
             }
@@ -221,28 +223,28 @@ namespace MedShop.Controllers
         {
             if ((await productService.ExistsAsync(id)) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+                TempData[ErrorMessage] = ProductDoesNotExist;
 
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole("Administrator") == false)
+            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole(AdminRoleName) == false)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not belong to this user!";
+                TempData[ErrorMessage] = ProductDoesNotBelongToUser;
 
                 return RedirectToAction(nameof(All));
             }
 
             if (information != model.GetInformation())
             {
-                TempData[MessageConstant.ErrorMessage] = "No need for experiments.";
+                TempData[ErrorMessage] = NoExperiments;
 
-                return RedirectToAction("All", "Product");
+                return RedirectToAction(nameof(All));
             }
 
             await productService.DeleteAsync(id);
 
-            TempData[MessageConstant.SuccessMessage] = "Product deleted successfully!";
+            TempData[SuccessMessage] = ProductDeleted;
 
             return RedirectToAction(nameof(All));
         }

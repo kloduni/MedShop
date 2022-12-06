@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using MedShop.Core.Contracts;
-using MedShop.Core.Models.Order;
+﻿using MedShop.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using MedShop.Extensions;
-using MedShop.Models;
 
 namespace MedShop.Controllers
 {

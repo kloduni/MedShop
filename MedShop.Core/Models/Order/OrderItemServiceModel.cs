@@ -1,9 +1,4 @@
-﻿using MedShop.Infrastructure.Data.Models;
-using MedShop.Core.Models.Admin;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace MedShop.Core.Models.Order
+﻿namespace MedShop.Core.Models.Order
 {
     public class OrderItemServiceModel
     {

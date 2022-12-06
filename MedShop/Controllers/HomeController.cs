@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using static MedShop.Areas.Admin.AdminConstants;
 
 namespace MedShop.Controllers
 {
@@ -10,9 +11,9 @@ namespace MedShop.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            if (User.IsInRole("Administrator"))
+            if (User.IsInRole(AdminRoleName))
             {
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                return RedirectToAction("Index", "Home", new { area = AreaName });
             }
 
             if (User?.Identity?.IsAuthenticated ?? false)

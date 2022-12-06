@@ -1,10 +1,13 @@
-﻿using MedShop.Core.Constants;
-using MedShop.Core.Models.ShoppingCart;
+﻿using MedShop.Core.Models.ShoppingCart;
 using MedShop.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MedShop.Core.Contracts;
 using MedShop.Core.Cart;
+using static MedShop.Core.Constants.MessageConstants;
+using static MedShop.Core.Constants.Cart.ShoppingCartConstants;
+using static MedShop.Core.Constants.Product.ProductConstants;
+using static MedShop.Areas.Admin.AdminConstants;
 
 namespace MedShop.Controllers
 {
@@ -28,7 +31,7 @@ namespace MedShop.Controllers
 
             if (items.Count == 0)
             {
-                TempData[MessageConstant.WarningMessage] = "Cart is empty!";
+                TempData[WarningMessage] = CartIsEmpty;
 
                 return RedirectToAction("All", "Product");
             }
@@ -52,21 +55,21 @@ namespace MedShop.Controllers
 
             if (product == null)
             {
-                TempData[MessageConstant.ErrorMessage] = "Product does not exist!";
+                TempData[ErrorMessage] = ProductDoesNotExist;
 
                 return RedirectToAction("All", "Product");
             }
 
-            if (product.UsersProducts.Any(up => up.UserId == User.Id()) && User.IsInRole("Administrator") == false)
+            if (product.UsersProducts.Any(up => up.UserId == User.Id()) && User.IsInRole(AdminRoleName) == false)
             {
-                TempData[MessageConstant.WarningMessage] = "You own this product!";
+                TempData[WarningMessage] = ProductBelongsToUser;
 
                 return RedirectToAction("All", "Product");
             }
 
             if (product.Quantity <= 0)
             {
-                TempData[MessageConstant.ErrorMessage] = "No quantity available!";
+                TempData[ErrorMessage] = ProductQuantityDepleted;
 
                 return RedirectToAction("All", "Product");
             }
@@ -76,7 +79,7 @@ namespace MedShop.Controllers
 
 
 
-            TempData[MessageConstant.SuccessMessage] = "Added to cart!";
+            TempData[SuccessMessage] = AddedToCart;
 
             return RedirectToAction("All", "Product");
         }
@@ -99,7 +102,7 @@ namespace MedShop.Controllers
 
             if (HttpContext.Session.GetString("UserId") != userId)
             {
-                TempData[MessageConstant.ErrorMessage] = "Wrong account!";
+                TempData[ErrorMessage] = WrongAccount;
 
                 return RedirectToAction("All", "Product");
             }

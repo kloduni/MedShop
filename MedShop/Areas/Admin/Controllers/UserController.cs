@@ -1,8 +1,9 @@
-﻿using MedShop.Core.Constants;
-using MedShop.Core.Contracts.Admin;
+﻿using MedShop.Core.Contracts.Admin;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static MedShop.Areas.Admin.AdminConstants;
+using static MedShop.Core.Constants.MessageConstants;
 
 namespace MedShop.Areas.Admin.Controllers
 {
@@ -29,19 +30,19 @@ namespace MedShop.Areas.Admin.Controllers
 
             if (user == null)
             {
-                TempData[MessageConstant.ErrorMessage] = "User not found!";
+                TempData[ErrorMessage] = UserNotFound;
                 return RedirectToAction(nameof(All));
 
             }
 
             if (user.IsActive)
             {
-                TempData[MessageConstant.SuccessMessage] = "User banned!";
+                TempData[SuccessMessage] = UserBanned;
                 await userService.BanUserByIdAsync(user);
             }
             else
             {
-                TempData[MessageConstant.WarningMessage] = "User already banned!";
+                TempData[WarningMessage] = UserAlreadyBanned;
             }
 
             return RedirectToAction(nameof(All));
@@ -53,20 +54,20 @@ namespace MedShop.Areas.Admin.Controllers
 
             if (user == null)
             {
-                TempData[MessageConstant.ErrorMessage] = "User not found!";
+                TempData[ErrorMessage] = UserNotFound;
                 return RedirectToAction(nameof(All));
 
             }
 
             if (user.IsActive)
             {
-                TempData[MessageConstant.ErrorMessage] = "User is not banned!";
-                
+                TempData[ErrorMessage] = UserNotBanned;
+
             }
             else
             {
                 await userService.UnbanUserByIdAsync(user);
-                TempData[MessageConstant.SuccessMessage] = "User unbanned!";
+                TempData[SuccessMessage] = UserUnbanned;
             }
 
             return RedirectToAction(nameof(All));

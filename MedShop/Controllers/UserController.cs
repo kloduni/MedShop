@@ -1,11 +1,13 @@
-﻿using MedShop.Core.Constants;
-using MedShop.Core.Models.User;
+﻿using MedShop.Core.Models.User;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using static MedShop.Core.Constants.MessageConstants;
+using static MedShop.Core.Constants.User.UserConstants;
+using static MedShop.Areas.Admin.AdminConstants;
 
 namespace MedShop.Controllers
 {
@@ -98,7 +100,7 @@ namespace MedShop.Controllers
             {
                 if (!user.IsActive)
                 {
-                    TempData[MessageConstant.ErrorMessage] = "You have been banned!";
+                    TempData[ErrorMessage] = Banned;
 
                     return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
                 }
@@ -112,9 +114,9 @@ namespace MedShop.Controllers
                         HttpContext.Session.SetString("UserId", user.Id);
                     }
                     
-                    if (await userManager.IsInRoleAsync(user, "Administrator"))
+                    if (await userManager.IsInRoleAsync(user, AdminRoleName))
                     {
-                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        return RedirectToAction("Index", "Home", new { area = AreaName });
                     }
 
                     return RedirectToAction("Index", "Home");
@@ -135,20 +137,20 @@ namespace MedShop.Controllers
 
         public async Task<IActionResult> CreateAdmin()
         {
-            if (await roleManager.Roles.AnyAsync(r => r.Name == "Administrator") == false)
+            if (await roleManager.Roles.AnyAsync(r => r.Name == AdminRoleName) == false)
             {
-                await roleManager.CreateAsync(new IdentityRole("Administrator"));
+                await roleManager.CreateAsync(new IdentityRole(AdminRoleName));
             }
 
-            var admin = await userManager.FindByEmailAsync("admin@medshop.com");
+            var admin = await userManager.FindByEmailAsync(AdminEmail);
 
-            if (await userManager.IsInRoleAsync(admin, "Administrator"))
+            if (await userManager.IsInRoleAsync(admin, AdminRoleName))
             {
-                TempData[MessageConstant.WarningMessage] = "Admin already exists!";
+                TempData[WarningMessage] = AdminExists;
             }
 
-            await userManager.AddToRoleAsync(admin, "Administrator");
-            TempData[MessageConstant.SuccessMessage] = "Admin created!";
+            await userManager.AddToRoleAsync(admin, AdminRoleName);
+            TempData[SuccessMessage] = AdminCreated;
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,4 +1,4 @@
-﻿@model ICollection<AllOrdersServiceModel>
+﻿@model ICollection<OrderServiceModel>
 
 @{
     ViewData["Title"] = "Completed orders";
@@ -21,7 +21,7 @@
                         <th>Order ID</th>
                         <th>Items</th>
                         <th>Total</th>
-                        <th>Buyer</th>
+                        <th>Seller</th>
 
 
                     </tr>
@@ -44,7 +44,7 @@
                                 </ul>
                             </td>
                             <td class="align-middle">
-                                @order.TotalPrice
+                                $@order.TotalPrice
                             </td>
                             <td class="align-middle"> @order.UserName </td>
                         </tr>

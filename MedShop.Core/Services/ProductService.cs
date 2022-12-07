@@ -4,6 +4,7 @@ using MedShop.Core.Models.Product.ProductSortingEnum;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace MedShop.Core.Services
 {
@@ -206,6 +207,78 @@ namespace MedShop.Core.Services
             return await repo.All<Product>()
                 .Include(p => p.UsersProducts)
                 .FirstOrDefaultAsync(p => p.Id == productId);
+        }
+
+        public async Task<ProductQueryModel> AllDeletedProducts(string? category = null, string? searchTerm = null, ProductSorting sorting = ProductSorting.Newest, int currentPage = 1, int productsPerPage = 1)
+        {
+            {
+                var result = new ProductQueryModel();
+
+                var products = repo.AllReadonly<Product>()
+                    .Where(p => p.IsActive == false);
+
+                if (string.IsNullOrEmpty(category) == false)
+                {
+                    products = products.Where(p => p.Category.Name == category);
+                }
+
+                if (string.IsNullOrEmpty(searchTerm) == false)
+                {
+                    searchTerm = $"%{searchTerm.ToLower()}%";
+                    products = products
+                        .Where(p => EF.Functions.Like(p.ProductName.ToLower(), searchTerm) ||
+                                    EF.Functions.Like(p.Description.ToLower(), searchTerm) ||
+                                    EF.Functions.Like(p.Category.Name.ToLower(), searchTerm));
+                }
+
+                products = sorting switch
+                {
+                    ProductSorting.Price => products.OrderBy(p => p.Price),
+                    _ => products.OrderByDescending(p => p.Id)
+                };
+
+                result.Products = await products
+                    .Skip((currentPage - 1) * productsPerPage)
+                    .Take(productsPerPage)
+                    .Select(p => new ProductServiceModel()
+                    {
+                        Id = p.Id,
+                        ProductName = p.ProductName,
+                        Description = p.Description,
+                        ImageUrl = p.ImageUrl,
+                        Price = p.Price,
+                        Category = p.Category.Name,
+                        Quantity = p.Quantity,
+                        Seller = p.UsersProducts.Select(up => up.User.UserName).First()
+                    })
+                    .ToListAsync();
+
+                result.TotalProductsCount = await products.CountAsync();
+
+                return result;
+            }
+        }
+
+        public async Task RestoreProductAsync(int id)
+        {
+            var product = await repo.GetByIdAsync<Product>(id);
+
+            product.IsActive = true;
+
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task ReduceProductAmount(ICollection<ShoppingCartItem> items)
+        {
+            foreach (var item in items)
+            {
+                var product = await repo.All<Product>()
+                    .FirstAsync(p => p.Id == item.Product.Id);
+
+                product.Quantity -= item.Amount;
+
+            }
+            await repo.SaveChangesAsync();
         }
     }
 }

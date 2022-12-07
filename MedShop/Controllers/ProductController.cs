@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using static MedShop.Core.Constants.Product.ProductConstants;
 using static MedShop.Core.Constants.MessageConstants;
 using static MedShop.Areas.Admin.AdminConstants;
+using MedShop.Infrastructure.Data.Models;
 
 namespace MedShop.Controllers
 {
@@ -206,12 +207,13 @@ namespace MedShop.Controllers
             var product = await productService.ProductDetailsByIdAsync(id);
             var model = new ProductServiceModel()
             {
+                Id = product.Id,
                 ProductName = product.ProductName,
                 Description = product.Description,
                 Category = product.Category,
                 ImageUrl = product.ImageUrl,
                 Price = product.Price,
-                Quantity= product.Quantity,
+                Quantity = product.Quantity,
                 Seller = product.Seller
             };
 
@@ -219,16 +221,15 @@ namespace MedShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, ProductServiceModel model, string information)
+        public async Task<IActionResult> Delete(ProductServiceModel model, string information)
         {
-            if ((await productService.ExistsAsync(id)) == false)
+            if ((await productService.ExistsAsync(model.Id)) == false)
             {
                 TempData[ErrorMessage] = ProductDoesNotExist;
-
                 return RedirectToAction(nameof(All));
             }
 
-            if ((await productService.HasUserWithIdAsync(id, User.Id())) == false && User.IsInRole(AdminRoleName) == false)
+            if ((await productService.HasUserWithIdAsync(model.Id, User.Id())) == false && User.IsInRole(AdminRoleName) == false)
             {
                 TempData[ErrorMessage] = ProductDoesNotBelongToUser;
 
@@ -238,11 +239,10 @@ namespace MedShop.Controllers
             if (information != model.GetInformation())
             {
                 TempData[ErrorMessage] = NoExperiments;
-
                 return RedirectToAction(nameof(All));
             }
 
-            await productService.DeleteAsync(id);
+            await productService.DeleteAsync(model.Id);
 
             TempData[SuccessMessage] = ProductDeleted;
 

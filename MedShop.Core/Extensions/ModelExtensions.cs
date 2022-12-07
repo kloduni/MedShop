@@ -10,17 +10,10 @@ namespace MedShop.Core.Extensions
         {
             StringBuilder info = new StringBuilder();
 
-            info.Append(product.ProductName.Replace(" ", "-"));
-            info.Append("-");
-            info.Append(GetDescription(product.Description));
+            info.Append("-info:");
+            info.Append($"{product.Id * 3}{product.Id * 7}{product.Id * 2}{product.Id * 3}{product.Id}");
 
             return info.ToString();
-        }
-
-        private static string GetDescription(string description)
-        {
-            string result = string.Join("-", description.Split(" ", StringSplitOptions.RemoveEmptyEntries));
-            return Regex.Replace(description, @"[e*a*o*u*]", "@341%4#qr853nv");
         }
     }
 }

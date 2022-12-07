@@ -16,7 +16,7 @@ namespace MedShop.Controllers
         public async Task<IActionResult> All()
         {
             string userId = User.Id();
-            var model = await orderService.GetOrdersModelByUserIdAsync(userId);
+            var model = await orderService.GetOrdersByUserIdAsync(userId);
 
             return View(model);
         }

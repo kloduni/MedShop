@@ -2,7 +2,6 @@
 using MedShop.Core.Models.Admin;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedShop.Core.Services.Admin
@@ -10,12 +9,11 @@ namespace MedShop.Core.Services.Admin
     public class UserService : IUserService
     {
         private readonly IRepository repo;
-        private readonly UserManager<User> userManager;
 
-        public UserService(IRepository _repo, UserManager<User> _userManager)
+
+        public UserService(IRepository _repo)
         {
             repo = _repo;
-            userManager = _userManager;
         }
 
         public async Task<IEnumerable<UserServiceModel>> All()

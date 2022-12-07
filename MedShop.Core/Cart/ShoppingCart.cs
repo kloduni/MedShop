@@ -52,7 +52,6 @@ namespace MedShop.Core.Cart
                 shoppingCartItem.Amount++;
             }
 
-            product.Quantity--;
             await repo.SaveChangesAsync();
         }
 
@@ -67,11 +66,9 @@ namespace MedShop.Core.Cart
                 if (shoppingCartItem.Amount > 1)
                 {
                     shoppingCartItem.Amount--;
-                    shoppingCartItem.Product.Quantity++;
                 }
                 else
                 {
-                    shoppingCartItem.Product.Quantity++;
                     await repo.DeleteAsync<ShoppingCartItem>(shoppingCartItem.Id);
                 }
             }

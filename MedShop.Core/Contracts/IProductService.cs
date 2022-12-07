@@ -25,5 +25,13 @@ namespace MedShop.Core.Contracts
         Task EditAsync(int productId, ProductBaseModel model);
         Task DeleteAsync(int productId);
         Task<Product> GetProductByIdAsync(int productId);
+        Task<ProductQueryModel> AllDeletedProducts(string? category = null,
+            string? searchTerm = null,
+            ProductSorting sorting = ProductSorting.Newest,
+            int currentPage = 1,
+            int productsPerPage = 1);
+
+        Task RestoreProductAsync(int id);
+        Task ReduceProductAmount(ICollection<ShoppingCartItem> items);
     }
 }

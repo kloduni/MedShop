@@ -28,8 +28,14 @@
                         <td class="align-middle">@item.Product.Price.ToString("c")</td>
                         <td class="align-middle">@item.Amount</td>
                         <td class="align-middle">@((item.Amount * item.Product.Price).ToString("c"))</td>
-                        <td>
-                            <a class="btn btn-danger" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Id">Remove</a>
+                        <td class="align-middle">
+                            <a class="text-danger" asp-controller="ShoppingCart" asp-action="RemoveItemFromShoppingCart"
+                               asp-route-id="@item.Id"><i class="bi bi-cart-dash"></i>
+                            </a>
+                            |
+                            <a class="text-success" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart"
+                               asp-route-id="@item.Product.Id"><i class="bi bi-cart-plus"></i>
+                            </a>
                         </td>
                     </tr>
                 }

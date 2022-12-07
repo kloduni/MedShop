@@ -2,7 +2,6 @@
 {
     public interface IProductModel
     {
-        public string ProductName { get; }
-        public string Description { get; }
+        public int Id { get; set; }
     }
 }

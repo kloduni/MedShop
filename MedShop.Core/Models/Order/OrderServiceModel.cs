@@ -1,6 +1,6 @@
 ﻿namespace MedShop.Core.Models.Order
 {
-    public class AllOrdersServiceModel
+    public class OrderServiceModel
     {
         public int Id { get; set; }
 

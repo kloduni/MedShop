@@ -41,39 +41,26 @@ namespace MedShop.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Order>> GetOrdersByUserIdAsync(string userId)
+        public async Task<ICollection<OrderServiceModel>> GetOrdersByUserIdAsync(string userId)
         {
-            var orders = await repo.AllReadonly<Order>()
-                .Where(o => o.UserId == userId)
-                .Include(o => o.OrderItems)
-                .ThenInclude(o => o.Product)
-                .Include(o => o.User)
-                .ToListAsync();
 
-            return orders;
-        }
-
-        public async Task<ICollection<AllOrdersServiceModel>> GetOrdersModelByUserIdAsync(string userId)
-        {
-            var orderItems = await repo.AllReadonly<OrderItem>()
-                .Where(oi => oi.Order.UserId == userId)
-                .Select(oi => new OrderItemServiceModel()
-                {
-                    Id = oi.Id,
-                    Price = oi.Price,
-                    Amount = oi.Amount,
-                    ProductName = oi.Product.ProductName
-                })
-                .ToListAsync();
-
-            return await repo.AllReadonly<Order>()
-                .Where(o => o.UserId == userId)
-                .Select(o => new AllOrdersServiceModel()
+            return await repo.All<Order>()
+                .Where(o => o.User.Id == userId)
+                .Select(o => new OrderServiceModel()
                 {
                     Id = o.Id,
-                    UserName = o.User.UserName,
-                    OrderItems = orderItems,
-                    TotalPrice = $"${orderItems.Select(i => i.Price * i.Amount).Sum().ToString()}"
+                    OrderItems = repo.All<OrderItem>()
+                        .Where(oi => oi.Order.Id == o.Id)
+                        .Select(oi => new OrderItemServiceModel()
+                        {
+                            Id = oi.Id,
+                            Price = oi.Price,
+                            Amount = oi.Amount,
+                            ProductName = oi.Product.ProductName
+                        })
+                        .ToList(),
+                    UserName = o.OrderItems.Select(oi => oi.Product.UsersProducts.Select(up => up.User.UserName).First()).First(),
+                    TotalPrice = o.OrderItems.Sum(oi => oi.Price * oi.Amount).ToString("f2")
                 })
                 .ToListAsync();
         }

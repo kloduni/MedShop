@@ -51,8 +51,6 @@ namespace MedShop.Controllers
         {
             var product = await productService.GetProductByIdAsync(id);
 
-            
-
             if (product == null)
             {
                 TempData[ErrorMessage] = ProductDoesNotExist;
@@ -78,10 +76,7 @@ namespace MedShop.Controllers
             await shoppingCart.AddItemToCartAsync(product);
 
 
-
-            TempData[SuccessMessage] = AddedToCart;
-
-            return RedirectToAction("All", "Product");
+            return RedirectToAction(nameof(ShoppingCart));
         }
 
         public async Task<IActionResult> RemoveItemFromShoppingCartAsync(int id)
@@ -108,8 +103,11 @@ namespace MedShop.Controllers
             }
 
             var items = shoppingCart.GetShoppingCartItems();
+
+
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
+            await productService.ReduceProductAmount(items);
             await orderService.StoreOrderAsync(items, userId, userEmailAddress);
             await shoppingCart.ClearShoppingCartAsync();
 

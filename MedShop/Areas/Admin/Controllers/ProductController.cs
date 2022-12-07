@@ -1,9 +1,7 @@
 ﻿using MedShop.Core.Contracts;
-using MedShop.Extensions;
 using MedShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using static MedShop.Core.Constants.MessageConstants;
-using static MedShop.Areas.Admin.AdminConstants;
 using static MedShop.Core.Constants.Product.ProductConstants;
 
 namespace MedShop.Areas.Admin.Controllers

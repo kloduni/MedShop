@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Text.RegularExpressions;
 using MedShop.Core.Contracts;
 
 namespace MedShop.Core.Extensions

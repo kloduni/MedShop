@@ -4,7 +4,6 @@ using MedShop.Core.Models.Product.ProductSortingEnum;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace MedShop.Core.Services
 {
@@ -206,7 +205,7 @@ namespace MedShop.Core.Services
         {
             return await repo.All<Product>()
                 .Include(p => p.UsersProducts)
-                .FirstOrDefaultAsync(p => p.Id == productId);
+                .FirstAsync(p => p.Id == productId);
         }
 
         public async Task<ProductQueryModel> AllDeletedProducts(string? category = null, string? searchTerm = null, ProductSorting sorting = ProductSorting.Newest, int currentPage = 1, int productsPerPage = 1)

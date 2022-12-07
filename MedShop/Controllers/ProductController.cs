@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using static MedShop.Core.Constants.Product.ProductConstants;
 using static MedShop.Core.Constants.MessageConstants;
 using static MedShop.Areas.Admin.AdminConstants;
-using MedShop.Infrastructure.Data.Models;
 
 namespace MedShop.Controllers
 {

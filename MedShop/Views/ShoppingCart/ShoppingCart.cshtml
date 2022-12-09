@@ -54,7 +54,7 @@
 
         <div class="text-right">
             <div class="btn-group">
-                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
+                <a class="btn btn-outline-primary" asp-controller="Order" asp-action="CompleteOrder">
                 Complete order
                 </a>
                 <div id="paypal-btn"></div>
@@ -107,7 +107,7 @@
             //Execute the payment
             onAuthorize: function (data, actions) {
                 return actions.payment.execute().then(function () {
-                    var url = '@Url.Action("CompleteOrder", "ShoppingCart", new { })';
+                    var url = '@Url.Action("CompleteOrder", "Order", new { })';
                     window.location.href = url;
                 });
             }

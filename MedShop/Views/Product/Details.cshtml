@@ -4,7 +4,7 @@
     ViewBag.Title = "Product Details";
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
+<h2 class="text-center text-capitalize text-primary" style="font-family: cursive">@ViewBag.Title</h2>
 <hr />
 
 <div class="container" style="display:flow">
@@ -13,16 +13,25 @@
             <img class="card-img-top" style="width: 20rem;"
                  src="@Model.ImageUrl" alt="Product Image">
         </div>
-        <div class="card col-8 border-0">
-            <p style="font-size:25px;"><u>@Model.ProductName</u></p>
-            <p>Description:<b>@Model.Description</b></p>
-            <p>Quantity:<b>@Model.Quantity</b></p>
-            <p>Seller:<b>@Model.Seller</b></p>
-            <p>
-                Price:
-                <b>$@String.Format("{0:f2}", Model.Price)</b>
-            </p>
-            <p>Category:<b>@Model.Category</b></p>
+        <div class="card col-8 border-0" style="font-family: cursive">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                <div class="card-header text-capitalize" style="font-size:30px">@Model.ProductName</div>
+                <div class="card-body">
+                    <p class="card-text">@Model.Description</p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Category: <b>@Model.Category</b></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Quantity: <b>@Model.Quantity</b></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Seller: <b>@Model.Seller</b></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Price: <b>$@String.Format("{0:f2}", Model.Price)</b></p>
+                </div>
+            </div>
             <div class="form-inline">
                 @if (this.User?.Identity?.IsAuthenticated ?? false)
                 {

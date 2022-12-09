@@ -6,7 +6,6 @@ namespace MedShop.Core.Contracts
     public interface IOrderService
     {
         Task StoreOrderAsync(ICollection<ShoppingCartItem> items, string userId, string userEmailAddress);
-        Task<ShoppingCartItem> GetCartItemByIdAsync(int cartItemId);
         Task<ICollection<OrderServiceModel>> GetOrdersByUserIdAsync(string userId);
     }
 }

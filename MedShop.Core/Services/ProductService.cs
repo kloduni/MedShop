@@ -64,6 +64,19 @@ namespace MedShop.Core.Services
             return result;
         }
 
+        public async Task<IEnumerable<ProductServiceModel>> AllCarousel()
+        {
+            return await repo.AllReadonly<Product>()
+                .Where(p => p.IsActive)
+                .Select(p => new ProductServiceModel()
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    ImageUrl = p.ImageUrl
+                })
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<string>> AllCategoriesNamesAsync()
         {
             return await repo.AllReadonly<Category>()

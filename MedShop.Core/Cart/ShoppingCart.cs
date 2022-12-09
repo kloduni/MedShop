@@ -83,6 +83,13 @@ namespace MedShop.Core.Cart
                 .ToList());
         }
 
+        public async Task<ShoppingCartItem> GetCartItemByIdAsync(int cartItemId)
+        {
+            return await repo.AllReadonly<ShoppingCartItem>()
+                .Where(i => i.Id == cartItemId)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<double> GetShoppingCartTotalAsync() => await repo.All<ShoppingCartItem>()
             .Where(n => n.ShoppingCartId == ShoppingCartId)
             .Select(n => (double)(n.Product.Price * n.Amount))

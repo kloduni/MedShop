@@ -33,8 +33,14 @@
                     }
                 </td>
                 <td>
-                    <a asp-area="Admin" asp-controller="User" asp-action="Ban" asp-route-userId="@user.UserId" class="btn btn-danger">Ban</a>
-                    <a asp-area="Admin" asp-controller="User" asp-action="Unban" asp-route-userId="@user.UserId" class="btn btn-success">Unban</a>
+                    <a asp-area="Admin" asp-controller="User" asp-action="Ban" asp-route-userId="@user.UserId" class="btn btn-danger">
+                        <i class="bi bi-person-x-fill"></i>
+                        Ban
+                    </a>
+                    <a asp-area="Admin" asp-controller="User" asp-action="Unban" asp-route-userId="@user.UserId" class="btn btn-success">
+                        <i class="bi bi-person-check-fill"></i>
+                        Unban
+                    </a>
                 </td>
             </tr>
         }

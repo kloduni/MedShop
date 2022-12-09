@@ -37,7 +37,7 @@
 @section Scripts {
     <script>
         $('#statistics-button').on('click', ev => {
-            $.get('https://localhost:7070/api/UsersApi', (data) => {
+            $.get('https://medshopapi.azurewebsites.net/api/usersstatisticsapi', (data) => {
                 $('#total-users').text(data.totalUsers + " users");
                 $('#active-users').text(data.activeUsers + " active users");
                 $('#total-products').text(data.totalProducts + " products");

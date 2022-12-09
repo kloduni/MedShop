@@ -1,7 +1,6 @@
 ﻿using MedShop.Core.Models.ShoppingCart;
 using MedShop.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using MedShop.Core.Contracts;
 using MedShop.Core.Cart;
 using static MedShop.Core.Constants.MessageConstants;
@@ -14,13 +13,11 @@ namespace MedShop.Controllers
     public class ShoppingCartController : BaseController
     {
         private readonly ShoppingCart shoppingCart;
-        private readonly IOrderService orderService;
         private readonly IProductService productService;
 
-        public ShoppingCartController(ShoppingCart _shoppingCart, IOrderService _orderService, IProductService _productService)
+        public ShoppingCartController(ShoppingCart _shoppingCart, IProductService _productService)
         {
             shoppingCart = _shoppingCart;
-            orderService = _orderService;
             productService = _productService;
         }
 
@@ -81,7 +78,7 @@ namespace MedShop.Controllers
 
         public async Task<IActionResult> RemoveItemFromShoppingCartAsync(int id)
         {
-            var cartItem = await orderService.GetCartItemByIdAsync(id);
+            var cartItem = await shoppingCart.GetCartItemByIdAsync(id);
 
             if (cartItem != null)
             {
@@ -89,29 +86,6 @@ namespace MedShop.Controllers
             }
 
             return RedirectToAction(nameof(ShoppingCart));
-        }
-
-        public async Task<IActionResult> CompleteOrder()
-        {
-            string userId = User.Id();
-
-            if (HttpContext.Session.GetString("UserId") != userId)
-            {
-                TempData[ErrorMessage] = WrongAccount;
-
-                return RedirectToAction("All", "Product");
-            }
-
-            var items = shoppingCart.GetShoppingCartItems();
-
-
-            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
-
-            await productService.ReduceProductAmount(items);
-            await orderService.StoreOrderAsync(items, userId, userEmailAddress);
-            await shoppingCart.ClearShoppingCartAsync();
-
-            return View("OrderCompleted");
         }
     }
 }

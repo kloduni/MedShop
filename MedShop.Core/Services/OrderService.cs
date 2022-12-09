@@ -43,7 +43,6 @@ namespace MedShop.Core.Services
 
         public async Task<ICollection<OrderServiceModel>> GetOrdersByUserIdAsync(string userId)
         {
-
             return await repo.All<Order>()
                 .Where(o => o.User.Id == userId)
                 .Select(o => new OrderServiceModel()
@@ -63,13 +62,6 @@ namespace MedShop.Core.Services
                     TotalPrice = o.OrderItems.Sum(oi => oi.Price * oi.Amount).ToString("f2")
                 })
                 .ToListAsync();
-        }
-
-        public async Task<ShoppingCartItem> GetCartItemByIdAsync(int cartItemId)
-        {
-            return await repo.AllReadonly<ShoppingCartItem>()
-                .Where(i => i.Id == cartItemId)
-                .FirstOrDefaultAsync();
         }
     }
 }

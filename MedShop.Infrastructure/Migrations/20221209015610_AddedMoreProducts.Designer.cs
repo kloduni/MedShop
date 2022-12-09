@@ -4,6 +4,7 @@ using MedShop.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedShop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221209015610_AddedMoreProducts")]
+    partial class AddedMoreProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -403,16 +405,16 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d650ef0a-5f7c-4baf-86ec-45a549764939",
+                            ConcurrencyStamp = "7d3b64b7-f3e8-406d-b2ca-5e0647c894cc",
                             Email = "admin@medshop.com",
                             EmailConfirmed = false,
                             IsActive = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@medshop.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAXwcga7EbyP5K+4+NYkBgSJa7PBd+U/Y3D3aE+A/SyMHt6D5C6j9fQ+DaiVIWqyJg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMgKENEO50tC3QJKUScsS1qqqT8NxRgRTWjw1R1Ue+jfqO0/Z/yBwTmr4XiFC2HYwg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9910c6c9-d766-48c8-92bc-2086afd45051",
+                            SecurityStamp = "bffe309b-2339-4c1f-bc51-82a19e2beea9",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -420,16 +422,16 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "89159c08-2f95-456f-91ea-75136c030b7b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a99ad296-8f6a-4ce1-a244-ddc890762443",
+                            ConcurrencyStamp = "21023afa-e7e7-4d4b-b3b1-fceb3990d465",
                             Email = "guest@medshop.com",
                             EmailConfirmed = false,
                             IsActive = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@medshop.com",
                             NormalizedUserName = "guest",
-                            PasswordHash = "AQAAAAEAACcQAAAAENwAXBJx97YePzCmHJE8jktkR5KAJxFGnNGe2+7951l4JfzmaJlTynO5rlXGDABLJw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMWHm70xhFWIHfHiVNyrB9SJBhW3pJB3A5YWdvd/eC/bZhASgjQoZZCbfLovkxIeeQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fcaf218e-42d1-4957-b028-dd02ca7e1256",
+                            SecurityStamp = "5aede226-dadc-4564-89a6-d6f96fdeeaac",
                             TwoFactorEnabled = false,
                             UserName = "guest"
                         },
@@ -437,16 +439,16 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9f01f7b1-c9bb-49bc-b3b8-0b6426a0d06c",
+                            ConcurrencyStamp = "c4c263e6-d49a-4320-bc96-3a8c34110d29",
                             Email = "guest1@medshop.com",
                             EmailConfirmed = false,
                             IsActive = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest1@medshop.com",
                             NormalizedUserName = "guest1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGDheZhG+w64XhuDN5TyLDB+MaOVQ6wKRNqu07VdX2BFaP+anVw1K8nXWlozodGb7w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMr89YJZv0O4qMt8dpQCekMXbA6XW1Pkf68fwGuhLLgCGtpiY1pbcdAaQoojqSeVpg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ca35b258-abd3-448f-a2d8-0220de56d2f5",
+                            SecurityStamp = "17ca22af-0f32-4833-9751-467d5469e873",
                             TwoFactorEnabled = false,
                             UserName = "guest1"
                         });
@@ -486,46 +488,6 @@ namespace MedShop.Infrastructure.Migrations
                         {
                             UserId = "dea12856-c198-4129-b3f3-b893d8395082",
                             ProductId = 4
-                        },
-                        new
-                        {
-                            UserId = "89159c08-2f95-456f-91ea-75136c030b7b",
-                            ProductId = 5
-                        },
-                        new
-                        {
-                            UserId = "89159c08-2f95-456f-91ea-75136c030b7b",
-                            ProductId = 6
-                        },
-                        new
-                        {
-                            UserId = "89159c08-2f95-456f-91ea-75136c030b7b",
-                            ProductId = 7
-                        },
-                        new
-                        {
-                            UserId = "89159c08-2f95-456f-91ea-75136c030b7b",
-                            ProductId = 8
-                        },
-                        new
-                        {
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            ProductId = 9
-                        },
-                        new
-                        {
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            ProductId = 10
-                        },
-                        new
-                        {
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            ProductId = 11
-                        },
-                        new
-                        {
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            ProductId = 12
                         });
                 });
 

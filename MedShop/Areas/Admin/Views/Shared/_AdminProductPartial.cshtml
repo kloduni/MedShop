@@ -27,7 +27,10 @@
                 <b>$@String.Format("{0:f2}", Model.Price)</b>
             </h6>
             <br />
-            <a asp-area="Admin" asp-controller="Product" asp-action="Restore" asp-route-id="@Model.Id" class="btn btn-success">Restore</a>
+            <a asp-area="Admin" asp-controller="Product" asp-action="Restore" asp-route-id="@Model.Id" class="btn btn-success">
+                <i class="bi bi-bandaid-fill"></i>
+                Restore
+            </a>
             <p></p>
         </div>
     </div>

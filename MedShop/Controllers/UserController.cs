@@ -113,7 +113,13 @@ namespace MedShop.Controllers
                     {
                         HttpContext.Session.SetString("UserId", user.Id);
                     }
-                    
+
+                    if(HttpContext.Session.GetString("UserId") != user.Id)
+                    {
+                        HttpContext.Session.SetString("CartId", Guid.NewGuid().ToString());
+                        HttpContext.Session.SetString("UserId", user.Id);
+                    }
+
                     if (await userManager.IsInRoleAsync(user, AdminRoleName))
                     {
                         return RedirectToAction("Index", "Home", new { area = AreaName });

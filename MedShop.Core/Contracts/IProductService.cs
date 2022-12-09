@@ -13,6 +13,7 @@ namespace MedShop.Core.Contracts
             int currentPage = 1,
             int productsPerPage = 1);
 
+        Task<IEnumerable<ProductServiceModel>> AllCarousel();
         Task<IEnumerable<string>> AllCategoriesNamesAsync();
         Task<IEnumerable<ProductCategoryModel>> AllCategoriesAsync();
         Task<bool> CategoryExistsAsync(int categoryId);

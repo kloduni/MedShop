@@ -27,10 +27,18 @@
                 <b>$@String.Format("{0:f2}", Model.Price)</b>
             </h6>
             <br />
-            <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" class="btn btn-warning">Details</a>
+        </div>
+        <div class="text-center">
+            <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()" class="btn btn-warning">
+                <i class="bi bi-info-circle-fill"></i>
+                Details
+            </a>
             @if (this.User?.Identity?.IsAuthenticated ?? false)
             {
-                <a asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id" class="btn btn-success">Buy</a>
+                <a asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id" class="btn btn-success">
+                    <i class="bi bi-bag-check-fill"></i>
+                    Buy
+                </a>
                 <p></p>
             }
         </div>

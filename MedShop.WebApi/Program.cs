@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Users Statistics Api");
+        options.SwaggerEndpoint("/swagger.json", "Users Statistics Api");
         options.RoutePrefix = string.Empty;
     });
 }

@@ -26,9 +26,18 @@
             <div class="form-inline">
                 @if (this.User?.Identity?.IsAuthenticated ?? false)
                 {
-                    <a class="btn btn-warning" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()">Edit</a>
-                    <a class="ml-2 btn btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()">Delete</a>
-                    <a class="ml-3 btn btn-success" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">Buy</a>
+                    <a class="btn btn-warning" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()">
+                        <i class="bi bi-pencil-fill"></i>
+                        Edit
+                    </a>
+                    <a class="ml-2 btn btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()">
+                        <i class="bi bi-trash-fill"></i>
+                        Delete
+                    </a>
+                    <a class="ml-3 btn btn-success" asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">
+                        <i class="bi bi-bag-check-fill"></i>
+                        Buy
+                    </a>
                 }
             </div>
             <p></p>

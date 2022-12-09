@@ -9,31 +9,51 @@
     <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MedShop.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
+
     <partial name="_UserMessages" />
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">MedShop</a>
+                <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                    <img src="https://content.presentermedia.com/files/clipart/00001000/1783/blue_medical_symbol_pc_800_wht.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                    MedShop
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" asp-controller="Product" asp-action="All">All Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="MyProducts">My Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="Add">Add Product</a>
-                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-light dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Product
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link text-bg-primary active" asp-controller="Product" asp-action="All">
+                                        <i class="bi bi-shop"></i>
+                                        All Products
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="MyProducts">
+                                        <i class="bi bi-safe2"></i>
+                                        My Products
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-bg-primary" asp-controller="Product" asp-action="Add">
+                                        <i class="bi bi-cash-coin"></i>
+                                        Sell Product
+                                    </a>
+                                </li>
+                            </ul>
                         <li class="nav-item">
                             <a class="nav-link text-bg-primary" asp-controller="Order" asp-action="All">Completed Orders</a>
                         </li>
@@ -69,7 +89,7 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MedShop.Tests.UnitTests
 {
+    [TestFixture]
     public class AdminUserServiceTests
     {
         private IRepository repo;

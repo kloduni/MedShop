@@ -26,7 +26,7 @@ namespace MedShop.Tests.IntegrationTests
             Assert.IsNotNull(result);
 
             Assert.That(value.Contains("TotalProducts\":5"), Is.True);
-            Assert.That(value.Contains("TotalUsers\":5"), Is.True);
+            Assert.That(value.Contains("TotalUsers\":5"), Is.True);     
             Assert.That(value.Contains("ActiveProducts\":3"), Is.True);
             Assert.That(value.Contains("ActiveUsers\":2"), Is.True);
         }

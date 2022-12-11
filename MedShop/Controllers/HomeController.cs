@@ -13,7 +13,7 @@ namespace MedShop.Controllers
         private readonly IProductService productService;
         private readonly ILogger logger;
 
-        public HomeController(IProductService _productService, ILogger _logger)
+        public HomeController(IProductService _productService, ILogger<HomeController> _logger)
         {
             productService = _productService;
             logger = _logger;

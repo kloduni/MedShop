@@ -12,16 +12,18 @@ namespace MedShop.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, bool seed = true)
             : base(options)
         {
-            if (Database.IsRelational())
-            {
-                Database.Migrate();
-            }
-            else
-            {
-                Database.EnsureCreated();
-            }
+            //// UNCOMMENT FOR TESTING PURPOSES
 
-            seedDb = seed;
+            //if (Database.IsRelational())
+            //{
+            //    Database.Migrate();
+            //}
+            //else
+            //{
+            //    Database.EnsureCreated();
+            //}
+
+            //seedDb = seed;
         }
 
         public DbSet<Product> Products { get; set; }

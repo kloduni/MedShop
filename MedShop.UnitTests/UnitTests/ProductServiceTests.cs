@@ -1,4 +1,5 @@
 ﻿using MedShop.Core.Contracts;
+using MedShop.Core.Exceptions;
 using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
 using MedShop.Core.Services;
@@ -6,6 +7,8 @@ using MedShop.Infrastructure.Data;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace MedShop.Tests.UnitTests
 {
@@ -14,11 +17,14 @@ namespace MedShop.Tests.UnitTests
     {
         private IRepository repo;
         private IProductService productService;
+        private ILogger<ProductService> logger;
+        private IGuard guard;
         private ApplicationDbContext context;
 
         [SetUp]
         public void Setup()
         {
+            guard = new Guard();
             var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase("MedShopTestDb")
                 .Options;
@@ -32,8 +38,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestCarouselProductsCount()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Product>()
             {
@@ -77,8 +85,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductAllQuery_FiltersAndReturnsCorrectValues()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Product>()
             {
@@ -232,8 +242,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestAllCategoriesNames_ReturnsCorrectValues()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Category>()
             {
@@ -269,8 +281,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestAllCategories_ReturnsCorrectValues()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Category>()
             {
@@ -306,8 +320,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestCategoryExists_ReturnsCorrectValue()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             var result = await productService.CategoryExistsAsync(1);
 
@@ -350,8 +366,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductExists_ReturnsCorrectValue()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             var result = await productService.ExistsAsync(1);
 
@@ -402,8 +420,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductDetailsById_ReturnsCorrectValues()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Product>()
             {
@@ -552,8 +572,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestAllProductsByUserId_ReturnsCorrectValues()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Product>()
             {
@@ -718,8 +740,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductHasUserWithId_ReturnsCorrectValue()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddAsync(new Product()
             {
@@ -765,8 +789,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestGetProductCategoryId_ReturnsCorrectValue()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddAsync(new Product()
             {
@@ -808,8 +834,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductEdit_EditsProductCorrectly()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddAsync(new Product()
             {
@@ -874,8 +902,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductDelete_RemovesActiveStatusCorrectly()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddAsync(new Product()
             {
@@ -921,8 +951,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductGetById_ReturnsCorrectValue()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddAsync(new Product()
             {
@@ -966,8 +998,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestAllDeletedProducts_ReturnsCorrectValues()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             await tRepo.AddRangeAsync(new List<Product>()
             {
@@ -1125,8 +1159,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestRestoreProduct_ChangesActiveStatusCorrectly()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             var product = new Product()
             {
@@ -1154,8 +1190,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestReduceProductAmount_ReducesProductAmountCorrectly()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             var productList = new List<Product>();
 
@@ -1260,8 +1298,10 @@ namespace MedShop.Tests.UnitTests
         [Test]
         public async Task TestProductCreate_CreatesCorrectProduct()
         {
+            var loggerMock = new Mock<ILogger<ProductService>>();
+            logger = loggerMock.Object;
             var tRepo = new Repository(context);
-            productService = new ProductService(tRepo);
+            productService = new ProductService(tRepo, logger, guard);
 
             var user = new User()
             {

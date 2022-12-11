@@ -4,7 +4,7 @@ using MedShop.Infrastructure.Data;
 using MedShop.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace MedShop.Extensions.DependencyInjection
+namespace MedShop.WebApi.Extensions
 {
     public static class MedShopApiServiceCollectionExtension
     {

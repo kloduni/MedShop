@@ -29,14 +29,14 @@ namespace MedShop.Core.Services.Admin
                 .ToListAsync();
         }
 
-        public async Task BanUserByIdAsync(User user)
+        public async Task BanUserAsync(User user)
         {
             user.IsActive = false;
 
             await repo.SaveChangesAsync();
         }
 
-        public async Task UnbanUserByIdAsync(User user)
+        public async Task UnbanUserAsync(User user)
         {
             user.IsActive = true;
 

@@ -6,7 +6,7 @@ namespace MedShop.Core.Contracts.Admin
     public interface IUserService
     {
         Task<IEnumerable<UserServiceModel>> All();
-        Task BanUserByIdAsync(User user);
-        Task UnbanUserByIdAsync(User user);
+        Task BanUserAsync(User user);
+        Task UnbanUserAsync(User user);
     }
 }

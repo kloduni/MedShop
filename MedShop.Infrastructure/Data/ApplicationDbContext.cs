@@ -7,9 +7,21 @@ namespace MedShop.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private bool seedDb;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, bool seed = true)
             : base(options)
         {
+            if (Database.IsRelational())
+            {
+                Database.Migrate();
+            }
+            else
+            {
+                Database.EnsureCreated();
+            }
+
+            seedDb = seed;
         }
 
         public DbSet<Product> Products { get; set; }
@@ -26,10 +38,13 @@ namespace MedShop.Infrastructure.Data
             builder.Entity<UserProduct>()
                 .HasKey(up => new {up.UserId, up.ProductId});
 
-            builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new CategoryConfiguration());
-            builder.ApplyConfiguration(new ProductConfiguration());
-            builder.ApplyConfiguration(new UserProductConfiguration());
+            if (seedDb)
+            {
+                builder.ApplyConfiguration(new UserConfiguration());
+                builder.ApplyConfiguration(new CategoryConfiguration());
+                builder.ApplyConfiguration(new ProductConfiguration());
+                builder.ApplyConfiguration(new UserProductConfiguration());
+            }
 
             base.OnModelCreating(builder);
         }

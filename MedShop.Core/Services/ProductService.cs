@@ -227,6 +227,7 @@ namespace MedShop.Core.Services
                 var result = new ProductQueryModel();
 
                 var products = repo.AllReadonly<Product>()
+                    .Include(p => p.Category)
                     .Where(p => p.IsActive == false);
 
                 if (string.IsNullOrEmpty(category) == false)

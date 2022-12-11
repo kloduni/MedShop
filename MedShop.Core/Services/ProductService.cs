@@ -1,19 +1,25 @@
 ﻿using MedShop.Core.Contracts;
+using MedShop.Core.Exceptions;
 using MedShop.Core.Models.Product;
 using MedShop.Core.Models.Product.ProductSortingEnum;
 using MedShop.Infrastructure.Data.Common;
 using MedShop.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace MedShop.Core.Services
 {
     public class ProductService : IProductService
     {
         private readonly IRepository repo;
+        private readonly ILogger logger;
+        private readonly IGuard guard;
 
-        public ProductService(IRepository _repo)
+        public ProductService(IRepository _repo, ILogger<ProductService> _logger, IGuard _guard)
         {
             repo = _repo;
+            logger = _logger;
+            guard = _guard;
         }
 
         /// <summary>
@@ -153,9 +159,17 @@ namespace MedShop.Core.Services
                 Product = product
             };
 
-            await repo.AddAsync(product);
-            await repo.AddAsync(userProduct);
-            await repo.SaveChangesAsync();
+            try
+            {
+                await repo.AddAsync(product);
+                await repo.AddAsync(userProduct);
+                await repo.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(nameof(CreateAsync), e);
+                throw new ApplicationException("Failed to save in Db", e);
+            }
 
             return product.Id;
         }
@@ -253,6 +267,7 @@ namespace MedShop.Core.Services
         public async Task EditAsync(int productId, ProductBaseModel model)
         {
             var product = await repo.GetByIdAsync<Product>(productId);
+            guard.AgainstNull(product, "Product not found!");
 
             product.ProductName = model.ProductName;
             product.Description = model.Description;
@@ -272,6 +287,7 @@ namespace MedShop.Core.Services
         public async Task DeleteAsync(int productId)
         {
             var product = await repo.GetByIdAsync<Product>(productId);
+            guard.AgainstNull(product, "Product not found!");
             product.IsActive = false;
 
             await repo.SaveChangesAsync();
@@ -357,7 +373,7 @@ namespace MedShop.Core.Services
         public async Task RestoreProductAsync(int id)
         {
             var product = await repo.GetByIdAsync<Product>(id);
-
+            guard.AgainstNull(product, "Product not found!");
             product.IsActive = true;
 
             await repo.SaveChangesAsync();
@@ -374,7 +390,7 @@ namespace MedShop.Core.Services
             {
                 var product = await repo.All<Product>()
                     .FirstAsync(p => p.Id == item.Product.Id);
-
+                guard.AgainstNull(product, "Product not found!");
                 product.Quantity -= item.Amount;
 
             }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using MedShop.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using static MedShop.Areas.Admin.AdminConstants;
 
 namespace MedShop.Controllers
@@ -10,10 +11,12 @@ namespace MedShop.Controllers
     public class HomeController : BaseController
     {
         private readonly IProductService productService;
+        private readonly ILogger logger;
 
-        public HomeController(IProductService _productService)
+        public HomeController(IProductService _productService, ILogger _logger)
         {
             productService = _productService;
+            logger = _logger;
         }
 
         [AllowAnonymous]
@@ -37,6 +40,10 @@ namespace MedShop.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+            logger.LogError(feature.Error, "TraceIdentifier: {0}", Activity.Current?.Id ?? HttpContext.TraceIdentifier);
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

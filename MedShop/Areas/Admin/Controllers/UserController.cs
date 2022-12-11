@@ -38,7 +38,7 @@ namespace MedShop.Areas.Admin.Controllers
             if (user.IsActive)
             {
                 TempData[SuccessMessage] = UserBanned;
-                await userService.BanUserByIdAsync(user);
+                await userService.BanUserAsync(user);
             }
             else
             {
@@ -66,7 +66,7 @@ namespace MedShop.Areas.Admin.Controllers
             }
             else
             {
-                await userService.UnbanUserByIdAsync(user);
+                await userService.UnbanUserAsync(user);
                 TempData[SuccessMessage] = UserUnbanned;
             }
 

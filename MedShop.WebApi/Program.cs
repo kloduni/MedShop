@@ -1,4 +1,4 @@
-using MedShop.Extensions.DependencyInjection;
+using MedShop.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +22,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger.json", "Users Statistics Api");
-        options.RoutePrefix = string.Empty;
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseCors("all");

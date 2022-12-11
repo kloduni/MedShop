@@ -15,6 +15,13 @@ namespace MedShop.Core.Services
             repo = _repo;
         }
 
+        /// <summary>
+        /// Stores user order with items in Db
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="userId"></param>
+        /// <param name="userEmailAddress"></param>
+        /// <returns></returns>
         public async Task StoreOrderAsync(ICollection<ShoppingCartItem> items, string userId, string userEmailAddress)
         {
             var order = new Order()
@@ -41,6 +48,11 @@ namespace MedShop.Core.Services
             await repo.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets orders by user Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<ICollection<OrderServiceModel>> GetOrdersByUserIdAsync(string userId)
         {
             return await repo.All<Order>()

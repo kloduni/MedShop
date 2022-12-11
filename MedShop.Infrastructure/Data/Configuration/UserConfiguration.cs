@@ -12,7 +12,7 @@ namespace MedShop.Infrastructure.Data.Configuration
             builder.Property(p => p.IsActive)
                 .HasDefaultValue(true);
             
-            builder.HasData(CreateUsersList());
+           builder.HasData(CreateUsersList());
         }
 
         private List<User> CreateUsersList()

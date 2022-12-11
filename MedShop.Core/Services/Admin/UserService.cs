@@ -16,6 +16,10 @@ namespace MedShop.Core.Services.Admin
             repo = _repo;
         }
 
+        /// <summary>
+        /// Gets all users with details
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<UserServiceModel>> All()
         {
             return await repo.AllReadonly<User>()
@@ -29,14 +33,24 @@ namespace MedShop.Core.Services.Admin
                 .ToListAsync();
         }
 
-        public async Task BanUserByIdAsync(User user)
+        /// <summary>
+        /// Bans user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task BanUserAsync(User user)
         {
             user.IsActive = false;
 
             await repo.SaveChangesAsync();
         }
 
-        public async Task UnbanUserByIdAsync(User user)
+        /// <summary>
+        /// Unbans user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task UnbanUserAsync(User user)
         {
             user.IsActive = true;
 

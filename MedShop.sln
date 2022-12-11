@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedShop.Infrastructure", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedShop.Core", "MedShop.Core\MedShop.Core.csproj", "{870C54F5-4AFE-4C4C-9E25-18FA03DDC8A1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedShop.UnitTests", "MedShop.UnitTests\MedShop.UnitTests.csproj", "{EB11467E-109A-4B0A-BEB6-C2C2AB2C0E65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedShop.Tests", "MedShop.UnitTests\MedShop.Tests.csproj", "{EB11467E-109A-4B0A-BEB6-C2C2AB2C0E65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedShop.WebApi", "MedShop.WebApi\MedShop.WebApi.csproj", "{F0B4A3D7-05BB-489D-B55B-901D3103BCFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedShop.WebApi", "MedShop.WebApi\MedShop.WebApi.csproj", "{F0B4A3D7-05BB-489D-B55B-901D3103BCFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -87,5 +87,12 @@ namespace MedShop.Controllers
 
             return RedirectToAction(nameof(ShoppingCart));
         }
+
+        public async Task<IActionResult> ClearCart()
+        {
+            await shoppingCart.ClearShoppingCartAsync();
+
+            return RedirectToAction(nameof(ShoppingCart));
+        }
     }
 }

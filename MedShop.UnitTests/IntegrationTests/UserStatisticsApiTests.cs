@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using MedShop.Tests.Mocks;
+﻿using MedShop.Tests.Mocks;
 using MedShop.WebApi.Controllers;
 using NuGet.Protocol;
 

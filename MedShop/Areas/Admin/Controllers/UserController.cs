@@ -35,6 +35,12 @@ namespace MedShop.Areas.Admin.Controllers
 
             }
 
+            if (await userManager.IsInRoleAsync(user, "Administrator"))
+            {
+                TempData[ErrorMessage] = UserIsAdmin;
+                return RedirectToAction(nameof(All));
+            }
+
             if (user.IsActive)
             {
                 TempData[SuccessMessage] = UserBanned;

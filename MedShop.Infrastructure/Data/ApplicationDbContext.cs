@@ -12,16 +12,7 @@ namespace MedShop.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, bool seed = true)
             : base(options)
         {
-            //// UNCOMMENT FOR TESTING PURPOSES
-
-            //if (Database.IsRelational())
-            //{
-            //    Database.Migrate();
-            //}
-            //else
-            //{
-            //    Database.EnsureCreated();
-            //}
+            // UNCOMMENT WHEN CREATING DB
 
             //seedDb = seed;
         }
